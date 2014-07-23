@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scrappy</title>
+
+    <!-- Bootstrap -->
+    <link href="{{{ host }}}/stylesheets/style.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  		<div class="container">
+  			<div class="navbar-header">
+  				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+  					<span class="sr-only">Toggle navigation</span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  					<span class="icon-bar"></span>
+  				</button>
+  				<a class="navbar-brand" href="#">Scrappy</a>
+  			</div>
+  			<div class="collapse navbar-collapse">
+  				<ul class="nav navbar-nav">
+  					<li><a href="../">Start</a></li>
+  					<li><a href="https://github.com/j33f/Scrappy">GitHub repo</a></li>
+  				</ul>
+  			</div><!--/.nav-collapse -->
+  		</div>
+  	</div>
+  	<div class="container">
+    	<h1>Examining a page</h1>
+      <p>Below is the page you want to examine: <strong><a href="{{{ url }}}" target="#page">{{{ url }}}</a></strong></p>
+      <p>Right-click to an element to get its properties via the "Inspect" menu entry then use them below to select this element</p>
+    	<iframe id="page" src="{{{ url }}}" style="width:100%;height:200px;"></iframe>
+      <hr>
+      <h2>Actions</h2>
+      <button class="btn btn-primary btn-sm" id="add">Add an action on this page</button>
+      <form class="form-inline">
+        <ol id="actions-list">
+
+        </ol>
+      </form>
+      <hr>
+      <h2>Choose what to do now</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <h3>Perform other actions on the urls scrapped</h3>
+          <p>If you choosed to follow some links, you may want to perform some actions to the pages.</p>
+          <form action="./follow/" method="post" id="follow">
+            <input type="hidden" name="url" value="{{{url}}}">
+            <input type="hidden" name="history" value="{}">
+            <button class="btn btn-primary">Do actions on followed links »</button>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <h3>Perform scrap the data and format them</h3>
+          <p>If you did not choosed to follow links and have selected elements to get data in them, just click the button below to scrap the data then format them</p>
+          <button class="btn btn-primary">Scrap and format »</button>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="container footer">
+      <p>«If you can display it, you can scrap it !»</p>
+    </div>
+    <script>
+      var url = '{{{ url }}}';
+      var history = {{{ history }}};
+    </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{{ host }}}/javascripts/bootstrap.min.js"></script>
+    <script src="{{{ host }}}/javascripts/examine.js"></script>
+  </body>
+</html>
