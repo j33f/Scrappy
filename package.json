@@ -3,19 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "safeStart": "git pull origin master && npm install && node ./bin/www"
   },
   "dependencies": {
-    "express": "~4.2.0",
-    "static-favicon": "~1.0.0",
-    "morgan": "~1.0.0",
-    "cookie-parser": "~1.0.1",
     "body-parser": "~1.0.0",
+    "cookie-parser": "~1.0.1",
     "debug": "~0.7.4",
+    "express": "~4.2.0",
     "hjs": "~0.0.6",
     "less-middleware": "1.0.x",
+    "morgan": "~1.0.0",
+    "node-uuid": "^1.4.1",
     "scrap": "~0.1.0",
-    "base64": "~2.1.0",
-    "utf8": "~2.0.0"
+    "static-favicon": "~1.0.0"
   }
 }
