@@ -37,16 +37,18 @@
   		</div>
   	</div>
   	<div class="container">
-    	<h1>Welcome !</h1>
-    	<form action="./examine/" method="post">
-    		<div class="form-group">
-    			<label for="url">Wich page do you want to examine ? (enter the complete url as shown)</label>
-    			<input type="text" class="form-control" id="url" name="url" placeholder="http://google.com/?s=scrap">
-    		</div>
-    		<div class="form-goup">
-    			<button type="sybmit" class="btn btn-success">Next step »</button>
-    		</div>
-    	</form>
+      <div class="jumbotron">
+      	<h1>Welcome !</h1>
+      	<form action="./examine/" method="post">
+      		<div class="form-group">
+      			<label for="url">Wich page do you want to examine ? (enter the complete url as shown)</label>
+      			<input type="text" class="form-control" id="url" name="url" placeholder="http://google.com/?s=scrap">
+      		</div>
+      		<div class="form-goup">
+      			<button type="sybmit" class="btn btn-success">Examine »</button>
+      		</div>
+      	</form>
+      </div>
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

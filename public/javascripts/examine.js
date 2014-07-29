@@ -20,8 +20,20 @@ $(function(){
 	  };
 	})($.fn.attr);
 
-
-
+	var cleanup = function(selector) {
+		var s = selector.split(' ');
+		var newS = [];
+		s.reverse();
+		for (var i in s) {
+			if (s[i].indexOf('#') == -1) {
+				newS.push(s[i]);
+			} else {
+				newS.push(s[i]);
+				break;
+			}
+		}
+		return newS.reverse().join(' ');
+	}
 
 	var pageOffset = $('#page').offset();
 	$('#page').height($(window).height() - pageOffset.top - $('#main-form').height());
@@ -31,6 +43,7 @@ $(function(){
 		$page.find("*")
 			.click(function(evt) {
 				evt.preventDefault();
+				$page.find('.scrappy_selected_element').removeClass('scrappy_selected_element');
 				var parents = [];
 				var selector = '';
 				$(this).parents()
@@ -61,8 +74,13 @@ $(function(){
 					selector += "." + $.trim(classNames).replace(/\s/gi, ".");
 				}
 				
+				if ($('#cleanup:checked').length) {
+					$('#current-selector').val(cleanup(selector));
+				} else {
+					$('#current-selector').val(selector);
+				}
+
 				$('#current-selector')
-					.val(selector)
 					.keyup()
 					.effect('highlight', {}, 2000)
 				;
@@ -73,8 +91,13 @@ $(function(){
 	$('#current-selector').keyup(function() {
 		var selector = $(this).val();
 		$page.find('.scrappy_selected_element').removeClass('scrappy_selected_element');
-		$page.find(selector).addClass('scrappy_selected_element');
-		var count = $page.find(selector).length;
+		try {
+			var $elements = $page.find(selector);
+		} catch (e) {
+			var $elements = $();
+		}
+		$elements.addClass('scrappy_selected_element');
+		var count = $elements.length;
 		if (count > 0) {
 			var indication = count+' element';
 			if (count > 1) indication +='s';
@@ -85,7 +108,6 @@ $(function(){
 		$('#indicator').html(indication);
 	});
 });
-
 
 var actions = {};
 
@@ -157,8 +179,8 @@ var actions = {};
 		if (!specialTagFound) {
 			$action.append('<option value="get html">Get the element HTML content</option>');
 			$action.append('<option value="get text">Get the element content (strip tags)</option>');				
-			$action.append('<option value="get attributes">None of these, just get attributes</option>');				
 		}
+		$action.append('<option value="get attributes">None of these, just get attributes</option>');				
 
 		if (tags.length == 1) {
 			var attr = $elements.first().attr();
@@ -176,16 +198,21 @@ var actions = {};
 	});
 
 	$('#btn-add-action-modal').click(function(){
-		if ($('#nicename').val().trim() != '' && ($('action').val() != '' || $('attributes').val())) {
-			var thisAction = {
-				niceName: $('#nicename').val().trim()
-				, selector: $('#current-selector').val().trim()
-				, action: ($('#action').val() || 'get attributes')
-				, attr: ($('#attributes').val() || [])
-			};
+		var thisAction = {
+			niceName: $('#nicename').val().trim()
+			, selector: $('#current-selector').val().trim()
+			, action: ($('#action').val() || 'get attributes')
+			, attr: ($('#attributes').val() || [])
+		};
 
+		if (thisAction.niceName == '') {
+				bootbox.alert('Please give a nice name!');
+		} else if (actions[thisAction.niceName]) {
+			bootbox.alert('This name is already in use !');
+		} else if ((thisAction.action == 'get attributes') && thisAction.attr.length == 0) {
+			bootbox.alert('You must select an action to perform with this selector and / or some attributes to grab.');
+		} else {
 			actions[thisAction.niceName] = thisAction;
-			console.log(actions);
 			var thisActionHtml = 			
 				'<tr>'
 					+ '<td>' + thisAction.niceName + '</td>'
@@ -193,7 +220,7 @@ var actions = {};
 					+ '<td>' + thisAction.action + '</td> '
 					+ '<td>' + thisAction.attr.join(', ') + '</td>'
 					+ '<td>'
-						+ '<button type="button" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-pencil"></strong></button> '
+//						+ '<button type="button" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-pencil"></strong></button> '
 						+ '<button type="button" class="btn btn-danger btn-sm"><strong class="glyphicon glyphicon-trash"></strong></button>'
 					+ '</td>'
 				+ '</tr>'
@@ -203,18 +230,16 @@ var actions = {};
 			$('#actions-list').find('.popover-dismiss').popover();
 
 			$('#add-action-modal').modal('hide');
-		} else {
-			if ($('#nicename').val().trim() == '') {
-				bootbox.alert('Please give a nice name!');
-			} else {
-				bootbox.alert('You must select an action to perform with this selector, or some attributes to scrap!');
-			}
+			$('#actionscount').html(Object.keys(actions).length);
+			$('#actionslisttab').show().effect('highlight', {}, 2000)
 		}
 	})
 		
 	$('#actions-list').on('click', '.remove', function() {
 		$(this).parents('li').remove();
 	});	
+
+
 /*
 	$('#follow').submit(function(e){
 		var firstUrl = $('.sample a').attr('href');

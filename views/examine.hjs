@@ -26,75 +26,72 @@
   					<span class="icon-bar"></span>
   					<span class="icon-bar"></span>
   				</button>
-  				<a class="navbar-brand" href="#">Scrappy</a>
+  				<a class="navbar-brand" href="{{{ host }}}">Scrappy</a>
   			</div>
   			<div class="collapse navbar-collapse">
   				<ul class="nav navbar-nav">
-  					<li><a href="../">Start</a></li>
+  					<li><a href="{{{ host }}}">Start</a></li>
   					<li><a href="https://github.com/j33f/Scrappy">GitHub repo</a></li>
   				</ul>
   			</div><!--/.nav-collapse -->
   		</div>
   	</div>
-  	<div class="container">
-    	<h1>Examining a page</h1>
-      <p>Below is the page you want to examine: <strong><a href="{{{ url }}}" target="#page">{{{ url }}}</a></strong></p>
-      <p>Click to an element to get its jQuery selector. <a href="http://api.jquery.com/category/selectors/">Learn more about jQuery selectors</a>.</p>
-    	<iframe id="page" style="width:100%;height:200px;" src="{{{ host }}}/tmp/{{{ tmp }}}"></iframe>
-      <div class="container" id="main-form">
-        <form class="form-horizontal" role="form">
-          <div class="form-group">
-            <div>
-              <label for="current-selector" class="control-label">Current selector:</label>
-            </div>
-            <div class="col-md12">
-              <input type="text" id="current-selector" class="form-control">
-               <small>Feel free to modify this selector to mach more than one element</small>
-            </div>
-            <button type="button" class="btn btn-primary" id="add"><strong class="glyphicon glyphicon-ok"></strong> Use this selector</button> <span id="indicator"></span>
-          </div>
-        </form>
-      </div>
-      <hr>
-      <h2>Actions</h2>
-      <p>These are all the actions that will be performed with this page.</p>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Nice name</th>
-            <th>Selector</th>
-            <th>Action</th>
-            <th>Attributes to grab</th>
-            <th>Manage</th>
-          </tr>
-        </thead>
-        <tbody id="actions-list">
 
-        </tbody>
-      </table>
-      <hr>
-      <h2>Choose what to do now</h2>
-      <div class="row">
-        <div class="col-md-6">
-          <h3>Perform other actions on the urls scrapped</h3>
-          <p>If you choosed to follow some links, you may want to perform some actions to the pages.</p>
-          <form action="./follow/" method="post" id="follow">
-            <input type="hidden" name="url" value="{{{url}}}">
-            <input type="hidden" name="history" value="{}">
-            <button class="btn btn-primary">Do actions on followed links »</button>
-          </form>
+
+  	<div class="container">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#examine" role="tab" data-toggle="tab">Examine</a></li>
+        <li id="actionslisttab" style="display:none;"><a href="#actionslist" role="tab" data-toggle="tab">Actions <span class="badge" id="actionscount">0</span></a></li>
+      </ul>
+
+
+    	<div class="tab-content">
+        <div class="tab-pane fade in active" id="examine">
+          <p>Below is the page you want to examine: <strong><a href="{{{ url }}}" target="#page">{{{ url }}}</a></strong></p>
+          <p>Click to an element to get its jQuery selector. <a href="http://api.jquery.com/category/selectors/">Learn more about jQuery selectors</a>.</p>
+
+        	<iframe 
+            id="page" 
+            style="width:100%;height:200px;border:1px solid #ccc;border-radius: 4px;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);" 
+            src="{{{ host }}}/tmp/{{{ tmp }}}"
+          ></iframe>
+
+          <div class="container" id="main-form">
+            <form class="form-horizontal" role="form">
+              <div class="form-group">
+                <div>
+                  <label for="current-selector" class="control-label">Current selector:</label> <label><input type="checkbox" id="cleanup"> Cleanup the selector</label>
+                </div>
+                <div>
+                  <input type="text" id="current-selector" class="form-control">
+                   <small>Feel free to modify this selector to mach more than one element</small>
+                </div>
+                <button type="button" class="btn btn-primary" id="add"><strong class="glyphicon glyphicon-ok"></strong> Use this selector</button> <span id="indicator"></span>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="col-md-6">
-          <h3>Perform scrap the data and format them</h3>
-          <p>If you did not choosed to follow links and have selected elements to get data in them, just click the button below to scrap the data then format them</p>
-          <button class="btn btn-primary">Scrap and format »</button>
+        <div class="tab-pane fade" id="actionslist">
+          <p>These are all the actions that will be performed with this page.</p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nice name</th>
+                <th>Selector</th>
+                <th>Action</th>
+                <th>Attributes to grab</th>
+                <th>Manage</th>
+              </tr>
+            </thead>
+            <tbody id="actions-list">
+
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-    <hr>
-    <div class="container footer">
-      <p>«If you can display it, you can scrap it !»</p>
-    </div>
+
 
     <div class="modal fade" id="add-action-modal">
       <div class="modal-dialog">
