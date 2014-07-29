@@ -11,6 +11,9 @@ router.post('/', function(req, res) {
 			res.send(500,err);
 		} else {
 			var tmp =  uuid.v4()+'.html';
+			try {
+				fs.mkdirSync(__dirname+'/../public/tmp');
+			} catch (e) {/* do nothing */}
 			fs.writeFile(__dirname+'/../public/tmp/'+tmp, html, function() {
 			  res.render('examine', {host: req.protocol + '://' + req.get('host'), url: url, history: '[]', tmp: tmp});
 			});
