@@ -51,18 +51,27 @@
               <input type="text" id="current-selector" class="form-control">
                <small>Feel free to modify this selector to mach more than one element</small>
             </div>
-            <button type="button" class="btn btn-primary" id="add">Use this selector</button> <span id="indicator"></span>
+            <button type="button" class="btn btn-primary" id="add"><strong class="glyphicon glyphicon-ok"></strong> Use this selector</button> <span id="indicator"></span>
           </div>
         </form>
       </div>
       <hr>
       <h2>Actions</h2>
-      <button class="btn btn-primary btn-sm" id="add">Add an action on this page</button>
-      <form class="form-inline">
-        <ol id="actions-list">
+      <p>These are all the actions that will be performed with this page.</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nice name</th>
+            <th>Selector</th>
+            <th>Action</th>
+            <th>Attributes to grab</th>
+            <th>Manage</th>
+          </tr>
+        </thead>
+        <tbody id="actions-list">
 
-        </ol>
-      </form>
+        </tbody>
+      </table>
       <hr>
       <h2>Choose what to do now</h2>
       <div class="row">
@@ -106,7 +115,7 @@
                 <select id="action" class="form-control"></select>
               </div>
               <div class="form-group" id="attributes-div">
-                <label for="action">Select attributes values</label>
+                <label for="action">Select attributes to grab values from</label>
                 <select id="attributes" class="form-control" multiple="multiple"></select>
                 <p class="help-block">You can select more than one attribute.</p>
               </div>
