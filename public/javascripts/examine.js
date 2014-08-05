@@ -125,7 +125,12 @@ $('#current-selector').keyup(function() {
 });
 
 $('#cleanup').click(function(){
-	var selector = $($('#current-selector').val(), $('#page').contents()).getSelector();
+	var selector = $('#current-selector').val();
+	var $page = $('#page').contents();
+
+	$page.find('.scrappy_selected_element').removeClass('scrappy_selected_element');
+
+	selector = $(selector, $page).getSelector();
 
 	if ($(this).is(':checked')) {
 		// cleanup the selector field if the cleanup checkbox is checked
@@ -133,6 +138,7 @@ $('#cleanup').click(function(){
 	} else {
 		$('#current-selector').val(selector);
 	}
+	$('#current-selector').keyup();
 });
 
 var actions = {};
@@ -194,11 +200,39 @@ $('#add').click(function(){
 		if (pcount > 1) {
 			$action.append('<option value="get html">Get each paragraph HTML content separately</option>');
 			$action.append('<option value="get text">Get each paragraph content separately (strip tags)</option>');
-			$action.append('<option value="get html">Get each paragraph HTML content and concat them</option>');
-			$action.append('<option value="get text">Get each paragraph content separately and concat them (strip tags)</option>');
+			$action.append('<option value="get concatenated html">Get each paragraph HTML content and concat them</option>');
+			$action.append('<option value="get concatenated text">Get each paragraph content separately and concat them (strip tags)</option>');
 		} else {
 			$action.append('<option value="get html">Get the paragraph HTML content</option>');
 			$action.append('<option value="get text">Get the paragraph content (strip tags)</option>');				
+		}
+	}
+	if ($.inArray('table', tags) >= 0) {
+		specialTagFound = true;
+		var pcount = countTags('table', $elements);
+		if (pcount > 1) {
+			$action.append('<option value="tables to arrays of html">Store each table as an array of html strings (strip headers if any)</option>');
+			$action.append('<option value="tables to arrays of html with headers">Store each table as an array of html strings (use headers if any)</option>');
+			$action.append('<option value="tables to arrays of html with first row as headers">Store each table as an array of html strings (use the first row as headers)</option>');
+			
+			$action.append('<option value="tables to arrays of text">Store each table as an array of text strings (strip headers if any - html stripped)</option>');
+			$action.append('<option value="tables to arrays of text with headers">Store each table as an array of text strings (use headers if any - html stripped)</option>');
+			$action.append('<option value="tables to arrays of text with first row as headers">Store each table as an array of text strings (use the first row as headers - html stripped)</option>');
+			
+			$action.append('<option value="concatenate tables to array of html">Concatenate each table as an array of html strings (strip headers if any)</option>');
+			$action.append('<option value="concatenate tables to array of html with headers">Concatenate each table as an array of html strings (use the fist table headers if any)</option>');
+			$action.append('<option value="concatenate tables to array of html with first row as headers">Concatenate each table as an array of html strings (use the first row of the first table as headers)</option>');
+			
+			$action.append('<option value="concatenate tables to array of text">Concatenate each table as an array of text strings (strip headers if any - html stripped)</option>');
+			$action.append('<option value="concatenate tables to array of text with headers">Concatenate each table as an array of text strings (use the fist table headers if any - html stripped)</option>');
+			$action.append('<option value="concatenate tables to array of text with first row as headers">Concatenate each table as an array of text strings (use the first row of the first table as headers - html stripped)</option>');
+		} else {
+			$action.append('<option value="tables to arrays of html">Store the table as an array of html strings (strip headers if any)</option>');
+			$action.append('<option value="tables to arrays of html with headers">Store table table as an array of html strings (use headers if any)</option>');
+			$action.append('<option value="tables to arrays of html with first row as headers">Store the table as an array of html strings (use the first row as headers)</option>');
+			$action.append('<option value="tables to arrays of text">Store the table as an array of text strings (strip headers if any - html stripped)</option>');
+			$action.append('<option value="tables to arrays of text with headers">Store the table as an array of text strings (use headers if any - html stripped)</option>');
+			$action.append('<option value="tables to arrays of text with first row as headers">Store the table as an array of text strings (use the first row as headers - html stripped)</option>');
 		}
 	}
 
