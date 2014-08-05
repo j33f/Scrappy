@@ -53,9 +53,14 @@
 
         	<iframe 
             id="page" 
-            style="width:100%;height:200px;border:1px solid #ccc;border-radius: 4px;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);" 
+            style="width:100%;height:0px;border:1px solid #ccc;border-radius: 4px;-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);" 
             src="{{{ host }}}/tmp/{{{ tmp }}}"
           ></iframe>
+          <div class="progress" id="loading">
+            <div class="progress-bar progress-bar-striped active" style="width: 100%">
+              Making the magic happend: please wait&hellip;
+            </div>
+          </div>
 
           <div class="container" id="main-form">
             <form class="form-horizontal" role="form">

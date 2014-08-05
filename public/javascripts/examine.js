@@ -1,3 +1,5 @@
+var $page;
+
 var cleanup = function(selector) {
 	// cleanup a selector by removing parents that have no id attribute but the last one in selector
 	var s = selector.split(' ');
@@ -13,6 +15,8 @@ var cleanup = function(selector) {
 	}
 	return newS.reverse().join(' ');
 }
+
+var actions = {};
 
 $(function(){
 	(function(old) {
@@ -69,38 +73,52 @@ $(function(){
 		return selector;
 	}
 
+	var countTags = function(tag, $el) {
+		var c = 0;
+		for (var i = 0 in $el) {
+			if ($el[i].nodeName) {
+				if ($el[i].nodeName.toLowerCase() == tag) c++;
+			} else {
+				return c;
+			}
+		}
+		return c;
+	}
+
 	var pageOffset = $('#page').offset();
 
-	$('#page').height($(window).height() - pageOffset.top - $('#main-form').height());
+	$page = $('#page').contents(); // $page is the iframe content
 
-	var $page = $('#page').contents(); // $page is the iframe content
+	window.setTimeout(function(){
+		$page.ready(function(){
+			// add some styles to the frame
+			$page.find('head').append('<style>body * {cursor: crosshair!important;} .scrappy_selected_element{border: 2px solid red!important}</style>');
+			// when clicking on any element on iframe, unmark all eventually previously marked element, mark it as selected (via a class) and get its selector
+			$('html body *', $page)
+				.click(function(evt) {
+					evt.preventDefault();
+					$page.find('.scrappy_selected_element').removeClass('scrappy_selected_element');
+					
+					var selector = $(this).getSelector();
 
-	$page.ready(function(){
-		// add some styles to the frame
-		$page.find('head').append('<style>body * {cursor: crosshair!important;} .scrappy_selected_element{border: 2px solid red!important}</style>');
-		// when clicking on any element on iframe, unmark all eventually previously marked element, mark it as selected (via a class) and get its selector
-		$page.find("*")
-			.click(function(evt) {
-				evt.preventDefault();
-				$page.find('.scrappy_selected_element').removeClass('scrappy_selected_element');
-				
-				var selector = $(this).getSelector();
+					if ($('#cleanup').is(':checked')) {
+						// cleanup the selector field if the cleanup checkbox is checked
+						$('#current-selector').val(cleanup(selector));
+					} else {
+						$('#current-selector').val(selector);
+					}
 
-				if ($('#cleanup').is(':checked')) {
-					// cleanup the selector field if the cleanup checkbox is checked
-					$('#current-selector').val(cleanup(selector));
-				} else {
-					$('#current-selector').val(selector);
-				}
-
-				// hilight the selector input field to make the action visible
-				$('#current-selector')
-					.keyup()
-					.effect('highlight', {}, 2000)
-				;
-				return false;
-			});
-});
+					// hilight the selector input field to make the action visible
+					$('#current-selector')
+						.keyup()
+						.effect('highlight', {}, 2000)
+					;
+					return false;
+				});
+		});
+		$('#loading').hide();
+		$('#page').height($(window).height() - pageOffset.top - $('#main-form').height());
+	}, 1000);
 
 $('#current-selector').keyup(function() {
 		// check the current selector string, visually mark them then count them
@@ -140,20 +158,6 @@ $('#cleanup').click(function(){
 	}
 	$('#current-selector').keyup();
 });
-
-var actions = {};
-
-var countTags = function(tag, $el) {
-	var c = 0;
-	for (var i = 0 in $el) {
-		if ($el[i].nodeName) {
-			if ($el[i].nodeName.toLowerCase() == tag) c++;
-		} else {
-			return c;
-		}
-	}
-	return c;
-}
 
 $('#add').click(function(){
 	var selector = $('#current-selector').val();
