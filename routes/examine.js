@@ -11,6 +11,9 @@ var collectGarbage = function() {
   var endTime = new Date().getTime() - 3600000 * 24;
   
 	fs.readdir(tmpDir, function(err, files) {
+		if (err) {
+			return console.error(err);
+		}
 	  files.forEach(function(file, index) {
 	    fs.stat(tmpDir+'/'+file, function(err, stat) {
 	      if (err) {
