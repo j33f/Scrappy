@@ -71,7 +71,7 @@ $(function(){
 			selector += "." + $.trim(classNames).replace(/\s/gi, ".");
 		}
 		return selector;
-	}
+	};
 
 	var countTags = function(tag, $el) {
 		var c = 0;
@@ -83,7 +83,26 @@ $(function(){
 			}
 		}
 		return c;
-	}
+	};
+
+	var drawActionsTable = function() {
+		var actionsHtml = '';
+		for (var i in actions) {
+			var thisAction = actions[i];
+			actionsHtml += 			
+			'<tr>'
+			+ '<td>' + thisAction.niceName + '</td>'
+			+ '<td>' + thisAction.selector + '</td>'
+			+ '<td>' + thisAction.action + '</td> '
+			+ '<td>' + (thisAction.attr.join(', ') || 'none') + '</td>'
+			+ '<td>'
+			+ '<button type="button" class="btn btn-danger btn-sm remove" data-action="' + i + '"><strong class="glyphicon glyphicon-trash"></strong></button>'
+			+ '</td>'
+			+ '</tr>'
+			;
+		}
+		$('#actions-list').html(actionsHtml);
+	};
 
 	var pageOffset = $('#page').offset();
 
@@ -162,6 +181,8 @@ $(function(){
 	$('#add').click(function(){
 		var selector = $('#current-selector').val();
 		$('#selector-info').html(selector);
+
+		$('#nicename').val('');
 
 		var $elements = $('#page').contents().find(selector);
 		var tags = [];
@@ -277,30 +298,28 @@ $(function(){
 			bootbox.alert('You must select an action to perform with this selector and / or some attributes to grab.');
 		} else {
 			actions[thisAction.niceName] = thisAction;
-			var thisActionHtml = 			
-			'<tr>'
-			+ '<td>' + thisAction.niceName + '</td>'
-			+ '<td>' + thisAction.selector + '</td>'
-			+ '<td>' + thisAction.action + '</td> '
-			+ '<td>' + thisAction.attr.join(', ') + '</td>'
-			+ '<td>'
-			//						+ '<button type="button" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-pencil"></strong></button> '
-			+ '<button type="button" class="btn btn-danger btn-sm"><strong class="glyphicon glyphicon-trash"></strong></button>'
-			+ '</td>'
-			+ '</tr>'
-			;
-
-			$('#actions-list').append(thisActionHtml);
+			drawActionsTable();
 			$('#actions-list').find('.popover-dismiss').popover();
 
 			$('#add-action-modal').modal('hide');
 			$('#actionscount').html(Object.keys(actions).length);
-			$('#actionslisttab').show().effect('highlight', {}, 2000)
+			var highlight = ['#selectorslisttab'];
+			if ($('#nextstepstab').css('display') == 'none') highlight.push('#nextstepstab');
+			$(highlight.join(',')).show().effect('highlight', {}, 2000);
 		}
 	});
 
 	$('#actions-list').on('click', '.remove', function() {
-		$(this).parents('li').remove();
+		delete actions[$(this).data('action')];
+		if (Object.keys(actions).length > 0) {
+			$(this).parents('tr').hide(200, function(){
+				$('#actionscount').html(Object.keys(actions).length);
+				$(this).remove();
+			});
+		} else {
+			$('#examinetab a').tab('show');
+			$('#selectorslisttab, #nextstepstab').hide(200);
+		}
 	});	
 
 

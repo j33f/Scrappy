@@ -41,8 +41,9 @@
   	<div class="container">
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
-        <li class="active"><a href="#examine" role="tab" data-toggle="tab">Examine</a></li>
-        <li id="actionslisttab" style="display:none;"><a href="#actionslist" role="tab" data-toggle="tab">Actions <span class="badge" id="actionscount">0</span></a></li>
+        <li id="examinetab" class="active"><a href="#examine" role="tab" data-toggle="tab">Examine</a></li>
+        <li id="selectorslisttab" style="display:none;"><a href="#selectorslist" role="tab" data-toggle="tab">Selectors to use <span class="badge" id="actionscount">0</span></a></li>
+        <li id="nextstepstab" style="display:none;"><a href="#nextsteps" role="tab" data-toggle="tab">Next steps</a></li>
       </ul>
 
 
@@ -77,8 +78,9 @@
             </form>
           </div>
         </div>
-        <div class="tab-pane fade" id="actionslist">
-          <p>These are all the actions that will be performed with this page.</p>
+        <!-------------------------------------------------------------------->
+        <div class="tab-pane fade" id="selectorslist">
+          <p>These are all the selectors Scrappy will look for on this page and the actions it will perform on them.</p>
           <table class="table">
             <thead>
               <tr>
@@ -93,6 +95,31 @@
 
             </tbody>
           </table>
+        </div>
+        <!-------------------------------------------------------------------->
+        <div class="tab-pane fade" id="nextsteps">
+          <div class="row">
+            <div class="col-md-12">
+              <p>Now your have set up selectors and actions, you will have to choose something to do now</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <h2>Scrap now</h2>
+              <p class="minHeight">You can execute the scrapping right now, then format the output data to get them.</p>
+              <button type="button" class="btn btn-primary">Scrap it now !</button>
+            </div>
+            <div class="col-md-4">
+              <h2>Follow the links</h2>
+              <p class="minHeight">You specified some links to follow on this page to perform other scrapping things, by clicking the button below, you will be asked to examine and choose things to scrap on the linked pages.</p>
+              <button type="button" class="btn btn-primary">Follow the links !</button>
+            </div>
+            <div class="col-md-4">
+              <h2>Save this scrapping project</h2>
+              <p class="minHeight">You can save the current scrapping project in order to use it or work on it later.</p>
+              <button type="button" class="btn btn-primary">Save this project !</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
