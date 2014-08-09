@@ -6,7 +6,7 @@ A simple utility to help scrap things and save them
 
 Warning : work in progress
 
-## Funtionnalities
+## Functionnalities
 
 - easy click and select elements on page
 - use jQuery selectors
