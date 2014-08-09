@@ -40,7 +40,7 @@
 
   	<div class="container">
       <!-- Nav tabs -->
-      <ul class="nav nav-tabs" role="tablist">
+      <ul id="tabnav" class="nav nav-tabs" role="tablist">
         <li id="examinetab" class="active"><a href="#examine" role="tab" data-toggle="tab">Examine</a></li>
         <li id="selectorslisttab" style="display:none;"><a href="#selectorslist" role="tab" data-toggle="tab">Selectors to use <span class="badge" id="actionscount">0</span></a></li>
         <li id="nextstepstab" style="display:none;"><a href="#nextsteps" role="tab" data-toggle="tab">Next steps</a></li>
@@ -49,6 +49,7 @@
 
     	<div class="tab-content">
         <div class="tab-pane fade in active" id="examine">
+          <p id="project" style="display:none;">You are working on the project <strong></strong></p>
           <p>Below is the page you want to examine: <strong><a href="{{{ url }}}" target="#page">{{{ url }}}</a></strong></p>
           <p>Click to an element to get its jQuery selector. <a href="http://api.jquery.com/category/selectors/">Learn more about jQuery selectors</a>.</p>
 
@@ -116,8 +117,11 @@
             </div>
             <div class="col-md-4">
               <h2>Save this scrapping project</h2>
-              <p class="minHeight">You can save the current scrapping project in order to use it or work on it later.</p>
-              <button type="button" class="btn btn-primary">Save this project !</button>
+              <p class="minHeight">You can save the current scrapping project in order to use it or work on it later (saved into your navigator).</p>
+              <button id="saveproject" type="button" class="btn btn-primary">Create a new project !</button>
+              <p class="savechanges" style="display:none;"><strong>or</strong><br>
+                <button id="savechanges" type="button" class="btn btn-primary">Save changes to this project !</button>
+              </p>
             </div>
           </div>
         </div>
@@ -162,6 +166,7 @@
     <script>
       var url = '{{{ url }}}';
       var history = {{{ history }}};
+      var load = {{{ load }}};
     </script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

@@ -45,15 +45,18 @@ router.post('/', function(req, res) {
 			// unlink to refresh the ctime
 			fs.writeFile(tmpDir+'/'+tmp, html, function() {
 				// send the data when the file has been written and available fot http queries
-			  res.render('examine', {
+				var params = {
 			  	host: req.protocol + '://' + req.get('host')
 			  	, url: url
 			  	, history: '[]'
 			  	, tmp: tmp
-			  });
+			  	, load: "'" +(req.param('load') || '') + "'"
+			  };
+			  res.render('examine', params);
 			});
 		});
 	}
+
 	scrap(url, function(err, $, code, html, resp) {
 		if (err) {
 			res.send(500,err);
@@ -77,6 +80,7 @@ router.post('/', function(req, res) {
 	});
 	collectGarbage();
 });
+
 router.post('/follow', function(req, res) {
 	res.render('examine', {
 		host: req.protocol + '://' + req.get('host')

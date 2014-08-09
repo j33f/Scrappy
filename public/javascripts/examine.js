@@ -102,8 +102,45 @@ $(function(){
 			;
 		}
 		$('#actions-list').html(actionsHtml);
+		$('#actionscount').html(Object.keys(actions).length);
 	};
 
+	var gotLocalStorage = function() {
+	  try {
+	    return 'localStorage' in window && window['localStorage'] !== null;
+	  } catch (e) {
+	    return false;
+	  }
+	};
+
+	var saveProject = function(name, action) {
+		if (action == 'create') {
+			if (!localStorage.scrappyActions) localStorage['scrappyActions'] =  JSON.stringify({});
+		}
+		var ls = JSON.parse(localStorage.scrappyActions);
+		if (action == 'create') {
+			if (ls[name]) {
+				bootbox.prompt('A project with this name already exists, please choose another name', function(name){
+					saveProject(name, 'create');
+				});
+				return false;
+			}
+		}
+		ls[name] = {
+			url: url
+			, actions: actions
+			, history: history
+		};
+		localStorage['scrappyActions'] = JSON.stringify(ls);
+		$('#project').show().find('strong').html(name);
+		$('.savechanges').show();
+		if (action == 'create') {
+			bootbox.alert('Created !');
+		} else {
+			bootbox.alert('Changes saved !');
+		}
+
+	}
 	var pageOffset = $('#page').offset();
 
 	$page = $('#page').contents(); // $page is the iframe content
@@ -136,7 +173,7 @@ $(function(){
 				});
 		});
 		$('#loading').hide();
-		$('#page').height($(window).height() - pageOffset.top - $('#main-form').height());
+		$('#page').height($(window).height() - pageOffset.top - $('#main-form').height() - $('#tabnav').height());
 	}, 1000);
 
 	$('#current-selector').keyup(function() {
@@ -302,7 +339,7 @@ $(function(){
 			$('#actions-list').find('.popover-dismiss').popover();
 
 			$('#add-action-modal').modal('hide');
-			$('#actionscount').html(Object.keys(actions).length);
+			
 			var highlight = ['#selectorslisttab'];
 			if ($('#nextstepstab').css('display') == 'none') highlight.push('#nextstepstab');
 			$(highlight.join(',')).show().effect('highlight', {}, 2000);
@@ -322,6 +359,32 @@ $(function(){
 		}
 	});	
 
+	$('#saveproject').click(function(){
+		if (!gotLocalStorage()) {
+			bootbox.alert('Your current browser seems to be a beautiful piece of holly crap, please, consider <a href="http://browsehappy.com/">downloading an up to date one</a>.');
+			return false;
+		}
+		bootbox.prompt('Give a name to this project', function(name){
+			saveProject(name, 'create');
+		});
+	});
+
+	$('#savechanges').click(function(){
+			saveProject(load, 'save');
+	});
+
+	// load  project if any
+	if (load != '') {
+		var ls = JSON.parse(localStorage.scrappyActions);
+		var project = ls[load];
+		actions = project.actions;
+		history = project.history;
+		drawActionsTable();
+		$('#selectorslisttab, #nextstepstab').show().effect('highlight', {}, 2000);
+		$('#project').show().find('strong').html(load);
+ 		$('.savechanges').show();
+
+	}
 
 /*
 	$('#follow').submit(function(e){

@@ -38,16 +38,21 @@
   	</div>
   	<div class="container">
       <div class="jumbotron">
-      	<h1>Welcome !</h1>
+      	<h1>Start scrapping now</h1>
       	<form action="./examine/" method="post">
       		<div class="form-group">
-      			<label for="url">Wich page do you want to examine ? (enter the complete url as shown)</label>
+      			<label for="url">Type an url to examine:</label>
       			<input type="text" class="form-control" id="url" name="url" placeholder="http://google.com/?s=scrap">
       		</div>
       		<div class="form-goup">
       			<button type="sybmit" class="btn btn-success">Examine »</button>
       		</div>
       	</form>
+        <div id="storedprojects" style="display:none;">
+          <hr>
+          <h2>Load a saved scrapping project</h2>
+          <table id="projects" class="table"></table>
+        </div>
       </div>
     </div>
 
@@ -55,5 +60,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="javascripts/bootstrap.min.js"></script>
+    <script src="javascripts/bootbox.min.js"></script>
+    <script src="javascripts/index.js"></script>
   </body>
 </html>
