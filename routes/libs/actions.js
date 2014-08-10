@@ -33,23 +33,23 @@ var Actions = {
 
 	, "tables to arrays of text" : 
 		function(html, selector) {
-			var options = {skipFirstRow: true, smartHeaders: false, stripTags: true};
+			var options = {skipFirstRow: true, smartHeaders: false, stripHtml: true};
 			return getAll(tables.getRows, html, selector, options)
 		}
 	, "tables to arrays of text with headers" : 
 		function(html, selector) {
-			var options = {skipFirstRow: false, smartHeaders: true, stripTags: true};
+			var options = {skipFirstRow: false, smartHeaders: true, stripHtml: true};
 			return getAll(tables.getRows, html, selector, options)
 		}
 
 	, "tables to arrays of html" : 
 		function(html, selector) {
-			var options = {skipFirstRow: true, smartHeaders: false, stripTags: false};
+			var options = {skipFirstRow: true, smartHeaders: false, stripHtml: false};
 			return getAll(tables.getRows, html, selector, options)
 		}
 	, "tables to arrays of html with headers" : 
 		function(html, selector) {
-			var options = {skipFirstRow: false, smartHeaders: true, stripTags: false};
+			var options = {skipFirstRow: false, smartHeaders: true, stripHtml: false};
 			return getAll(tables.getRows, html, selector, options)
 		}
 };

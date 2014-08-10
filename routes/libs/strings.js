@@ -1,7 +1,8 @@
 var Entities = require('html-entities').AllHtmlEntities,
 	entities = new Entities();
 
-var stripTags = function(str) {
+var stripHtml = function(str) {
+	// strip html tags and entities
 	return entities.decode(
 			str.replace(/(<([^>]+)>)/ig,'').trim()
 		);

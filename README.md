@@ -15,6 +15,11 @@ A simple utility to help scrap things and save them
 - detects attributes and offers to scrap them
 - CRUD scrapping projects (use localStorage at the moment)
 
+## Ideas reminder 
+
+- handle the colspan for tables
+- maybe handle the rowspan
+- maybe add a way to reconstruct the full URIs for href and src
 
 
 
