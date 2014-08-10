@@ -4,7 +4,7 @@ Scrappy
 A simple utility to help scrap things and save them
 
 
-Warning : work in progress
+**Warning** : work in progress, its not fully functional yet !
 
 ## Functionnalities
 
@@ -15,11 +15,6 @@ Warning : work in progress
 - detects attributes and offers to scrap them
 - CRUD scrapping projects (use localStorage at the moment)
 
-## To do
-
-Just a reminder (may be not really up to date) :
-
-- scrap things :)
 
 
 

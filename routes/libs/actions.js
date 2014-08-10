@@ -1,32 +1,56 @@
 var cheerio = require('cheerio');
-var Entities = require('html-entities').AllHtmlEntities,
-	entities = new Entities();
 
-var stripTags = function(str) {
-	return entities.decode(
-			str.replace(/(<([^>]+)>)/ig,'').trim()
-		);
+var tables = require('./tables');
+
+var getAll = function(action, html, selector, options) {
+	// get all the elements corresponding to 'selector' in 'html' and apply 'action' with 'options'
+	var $ = cheerio.load(html);
+	var result = [];
+	$(selector).each(function(index, table){
+		result.push(action($(table).html(), options));
+	});
+	return result;	
 }
 
 var Actions = {
-	"tables to arrays of text" : 
+	"_Model" : 
 		function(html, selector) {
-			var $ = cheerio.load(html);
-			var result = [];
-			$(selector).each(function(index, element){
-				var table = [];
-				$(element).find('tr').each(function(i,e){
-					if (i>0) {
-						var tr = [];
-						$(e).find('td').each(function(){
-							tr.push(stripTags($(this).html()));
-						});
-						table.push(tr);
-					}
-				});
-				result.push(table);
-			});
-			return result;
+			/*
+			Model of all actions
+			var options = { options for the action funtion to call};
+			return getAll(
+				action.to.call (mandatory)
+				, html var (mandatory)
+				, selector var (mandatory)
+				, options (optional)
+			);
+			*/
+			return null;
+		}
+
+	// Tables
+	//*******************************************************************************
+
+	, "tables to arrays of text" : 
+		function(html, selector) {
+			var options = {skipFirstRow: true, smartHeaders: false, stripTags: true};
+			return getAll(tables.getRows, html, selector, options)
+		}
+	, "tables to arrays of text with headers" : 
+		function(html, selector) {
+			var options = {skipFirstRow: false, smartHeaders: true, stripTags: true};
+			return getAll(tables.getRows, html, selector, options)
+		}
+
+	, "tables to arrays of html" : 
+		function(html, selector) {
+			var options = {skipFirstRow: true, smartHeaders: false, stripTags: false};
+			return getAll(tables.getRows, html, selector, options)
+		}
+	, "tables to arrays of html with headers" : 
+		function(html, selector) {
+			var options = {skipFirstRow: false, smartHeaders: true, stripTags: false};
+			return getAll(tables.getRows, html, selector, options)
 		}
 };
 

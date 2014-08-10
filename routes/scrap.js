@@ -26,7 +26,9 @@ router.post('/', function(req, res) {
   	html = iconv.decode(html, project.charset);
 	for (var name in project.actions) {
 		// perform all actions and store them into the datastore
-		project.data[name] = actions[project.actions[name].action](html, project.actions[name].selector);
+		if (actions[project.actions[name].action]) { // ensure that the action really exists
+			project.data[name] = actions[project.actions[name].action](html, project.actions[name].selector);
+		}
 	}
 	res.json(project.data);
   });

@@ -276,26 +276,20 @@ $(function(){
 			if (pcount > 1) {
 				$action.append('<option value="tables to arrays of html">Store each table as an array of html strings (strip headers if any)</option>');
 				$action.append('<option value="tables to arrays of html with headers">Store each table as an array of html strings (use headers if any)</option>');
-				$action.append('<option value="tables to arrays of html with first row as headers">Store each table as an array of html strings (use the first row as headers)</option>');
 				
 				$action.append('<option value="tables to arrays of text">Store each table as an array of text strings (strip headers if any - html stripped)</option>');
 				$action.append('<option value="tables to arrays of text with headers">Store each table as an array of text strings (use headers if any - html stripped)</option>');
-				$action.append('<option value="tables to arrays of text with first row as headers">Store each table as an array of text strings (use the first row as headers - html stripped)</option>');
 				
 				$action.append('<option value="concatenate tables to array of html">Concatenate each table as an array of html strings (strip headers if any)</option>');
 				$action.append('<option value="concatenate tables to array of html with headers">Concatenate each table as an array of html strings (use the fist table headers if any)</option>');
-				$action.append('<option value="concatenate tables to array of html with first row as headers">Concatenate each table as an array of html strings (use the first row of the first table as headers)</option>');
 				
 				$action.append('<option value="concatenate tables to array of text">Concatenate each table as an array of text strings (strip headers if any - html stripped)</option>');
 				$action.append('<option value="concatenate tables to array of text with headers">Concatenate each table as an array of text strings (use the fist table headers if any - html stripped)</option>');
-				$action.append('<option value="concatenate tables to array of text with first row as headers">Concatenate each table as an array of text strings (use the first row of the first table as headers - html stripped)</option>');
 			} else {
 				$action.append('<option value="tables to arrays of html">Store the table as an array of html strings (strip headers if any)</option>');
 				$action.append('<option value="tables to arrays of html with headers">Store table table as an array of html strings (use headers if any)</option>');
-				$action.append('<option value="tables to arrays of html with first row as headers">Store the table as an array of html strings (use the first row as headers)</option>');
 				$action.append('<option value="tables to arrays of text">Store the table as an array of text strings (strip headers if any - html stripped)</option>');
 				$action.append('<option value="tables to arrays of text with headers">Store the table as an array of text strings (use headers if any - html stripped)</option>');
-				$action.append('<option value="tables to arrays of text with first row as headers">Store the table as an array of text strings (use the first row as headers - html stripped)</option>');
 			}
 		}
 
