@@ -8,4 +8,4 @@ var stripHtml = function(str) {
 		);
 }
 
-module.exports.stripTags = stripTags;
+module.exports.stripHtml = stripHtml;
