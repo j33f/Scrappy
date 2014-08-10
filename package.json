@@ -2,19 +2,32 @@
   "name": "scrappy",
   "version": "0.0.1",
   "private": true,
+  "author": {
+    "name": "Jean-François Vial",
+    "url": "<http://about.me/Jeff_>"
+  },
+  "license": "GPL-3.0+",
   "scripts": {
     "start": "node ./bin/www",
     "safeStart": "git pull origin master && npm install && node ./bin/www"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/j33f/Scrappy.git"
+  },
   "dependencies": {
+    "async": "^0.9.0",
     "body-parser": "~1.0.0",
+    "cheerio": "^0.17.0",
     "cookie-parser": "~1.0.1",
     "debug": "~0.7.4",
     "express": "~4.2.0",
     "hjs": "~0.0.6",
+    "html-entities": "^1.0.10",
     "iconv-lite": "~0.4.4",
     "less-middleware": "1.0.x",
     "morgan": "~1.0.0",
+    "request": "^2.40.0",
     "scrap": "~0.1.0",
     "slug": "~0.5.0",
     "static-favicon": "~1.0.0"

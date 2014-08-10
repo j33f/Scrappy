@@ -128,6 +128,7 @@ $(function(){
 		}
 		ls[name] = {
 			url: url
+			, charset: charset
 			, actions: actions
 			, history: history
 		};
@@ -336,6 +337,12 @@ $(function(){
 		} else {
 			actions[thisAction.niceName] = thisAction;
 			drawActionsTable();
+			$('#projectjson').val(JSON.stringify({
+				url: url
+				, charset: charset
+				, actions: actions
+				, history: history
+			}));
 			$('#actions-list').find('.popover-dismiss').popover();
 
 			$('#add-action-modal').modal('hide');
@@ -348,6 +355,7 @@ $(function(){
 
 	$('#actions-list').on('click', '.remove', function() {
 		delete actions[$(this).data('action')];
+		$('#projectjson').val(JSON.stringify(actions));
 		if (Object.keys(actions).length > 0) {
 			$(this).parents('tr').hide(200, function(){
 				$('#actionscount').html(Object.keys(actions).length);
@@ -380,10 +388,15 @@ $(function(){
 		actions = project.actions;
 		history = project.history;
 		drawActionsTable();
+ 		$('#projectjson').val(JSON.stringify({
+				url: url
+				, charset: charset
+				, actions: actions
+				, history: history
+			}));
 		$('#selectorslisttab, #nextstepstab').show().effect('highlight', {}, 2000);
 		$('#project').show().find('strong').html(load);
  		$('.savechanges').show();
-
 	}
 
 /*

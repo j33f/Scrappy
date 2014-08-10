@@ -34,7 +34,7 @@ router.post('/', function(req, res) {
 	var url = req.param('url');
 	var tmp =  slugify(url)+'.html';
 
-	var storeAndSend = function(html) {
+	var storeAndSend = function(html, charset) {
 		try {
 			// try to create the tmp dir in public
 			// ugly thing : fix me
@@ -51,6 +51,7 @@ router.post('/', function(req, res) {
 			  	, history: '[]'
 			  	, tmp: tmp
 			  	, load: "'" +(req.param('load') || '') + "'"
+			  	, charset: charset
 			  };
 			  res.render('examine', params);
 			});
@@ -65,16 +66,16 @@ router.post('/', function(req, res) {
 			if($('head meta[http-equiv=\'Content-Type\']').length > 0) {
 				var charset = $('head meta[http-equiv=\'Content-Type\']').attr('content').match(/charset=(.*)/)[1].toLowerCase();
 				scrap({url: url, encoding: null}, function(err, $, code, html, resp) {
-					storeAndSend(iconv.decode(html, charset));
+					storeAndSend(iconv.decode(html, charset), charset);
 				});
 			} else if ($('head meta[charset]').length > 0){
 				var charset = $('head meta[charset]').attr('charset').toLowerCase();
 				scrap({url: url, encoding: null}, function(err, $, code, html, resp) {
-					storeAndSend(iconv.decode(html, charset));
+					storeAndSend(iconv.decode(html, charset), charset);
 				});
 			} else {
 				// assume its utf-8
-				storeAndSend(html);
+				storeAndSend(html, 'utf-8');
 			}
 		}
 	});
