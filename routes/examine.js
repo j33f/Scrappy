@@ -8,6 +8,7 @@ var fs = require('fs');
 var tmpDir = __dirname+'/../public/tmp';
 
 var collectGarbage = function() {
+	// delete temp files older than 24h
   var endTime = new Date().getTime() - 3600000 * 24;
   
 	fs.readdir(tmpDir, function(err, files) {
@@ -42,27 +43,30 @@ router.post('/', function(req, res) {
 		} catch (e) {/* do nothing */}
 
 		fs.unlink(tmpDir+'/'+tmp, function(){
-			// unlink to refresh the ctime
+			// unlink to refresh the file ctime of the page stored for examination in the iframe (the only way to do that)
 			fs.writeFile(tmpDir+'/'+tmp, html, function() {
-				// send the data when the file has been written and available fot http queries
+				// render when the tmp file has been written and available fot http queries
 				var params = {
-			  	host: req.protocol + '://' + req.get('host')
-			  	, url: url
-			  	, history: '[]'
-			  	, tmp: tmp
-			  	, load: "'" +(req.param('load') || '') + "'"
-			  	, charset: charset
+			  	host: req.protocol + '://' + req.get('host') // the current server host, ease the ressources access
+			  	, url: url // the to be scrapped url
+			  	, history: '[]' // the "history" in case of the current page is one of the pages to be scrapped in the project, not in use yet
+			  	, tmp: tmp // the tmp file name to display into the iframe
+			  	, load: "'" +(req.param('load') || '') + "'" // the project that we want to load from user localStorage
+			  	, charset: charset // the to be scrapped page charset
 			  };
 			  res.render('examine', params);
 			});
 		});
-	}
+	};
+
+	/**********************************************************************/
 
 	scrap(url, function(err, $, code, html, resp) {
+		// scrap once the page
 		if (err) {
 			res.send(500,err);
 		} else {
-			// try to find the page encoding
+			// try to find the page encoding via http-equiv tag and via meta tag
 			if($('head meta[http-equiv=\'Content-Type\']').length > 0) {
 				var charset = $('head meta[http-equiv=\'Content-Type\']').attr('content').match(/charset=(.*)/)[1].toLowerCase();
 				scrap({url: url, encoding: null}, function(err, $, code, html, resp) {
@@ -82,11 +86,11 @@ router.post('/', function(req, res) {
 	collectGarbage();
 });
 
-router.post('/follow', function(req, res) {
+/*router.post('/follow', function(req, res) {
 	res.render('examine', {
 		host: req.protocol + '://' + req.get('host')
 		, url: req.param('url')
 		, history: JSON.stringify(req.param('history'))
 	});
-});
+});*/
 module.exports = router
