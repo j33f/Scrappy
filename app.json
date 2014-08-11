@@ -1,0 +1,7 @@
+{
+  "name": "Scrappy",
+  "description": "A web pages scrapping utility using nodeJS and a web UI",
+  "repository": "https://github.com/j33f/Scrappy",
+  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "scrap", "cheerio"]
+}
