@@ -19,6 +19,8 @@ A simple utility to help scrap things and save them
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+or try the demo (may not be up to date) http://scrappy-example.herokuapp.com
+
 ## Ideas reminder 
 
 - handle the colspan for tables
