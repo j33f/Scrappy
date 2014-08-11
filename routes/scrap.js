@@ -24,13 +24,13 @@ router.post('/', function(req, res) {
   // scrap the url page
   request({url: project.url, encoding: null}, function(err, code, html) {
   	html = iconv.decode(html, project.charset); // apply the proper charset to the html content : is it really useful ?
-	for (var name in project.actions) {
-		// perform all actions and store them into the datastore
-		if (actions[project.actions[name].action]) { // ensure that the action really exists
-			project.data[name] = actions[project.actions[name].action](html, project.actions[name].selector); // perform the action
-		}
-	}
-	res.json(project.data); // Output the data 'as is' by now for dev
+  	for (var name in project.actions) {
+  		// perform all actions and store them into the datastore
+  		if (actions[project.actions[name].action]) { // ensure that the action really exists
+  			project.data[name] = actions[project.actions[name].action](html, project.actions[name].selector); // perform the action
+  		}
+  	}
+  	res.json(project.data); // Output the data 'as is' by now for dev
   });
 });
 
