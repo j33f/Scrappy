@@ -16,15 +16,17 @@ var collectGarbage = function() {
 			return console.error(err);
 		}
 	  files.forEach(function(file, index) {
-	    fs.stat(tmpDir+'/'+file, function(err, stat) {
-	      if (err) {
-	        return console.error(err);
-	      }
-	      var fileTime = new Date(stat.ctime).getTime();
-	      if (fileTime > endTime) {
-	        fs.unlink(tmpDir+'/'+file, function(err){if(err)console.log(err)});
-	      }
-	    });
+	  	if (file != '.placeholder') {
+		    fs.stat(tmpDir+'/'+file, function(err, stat) {
+		      if (err) {
+		        return console.error(err);
+		      }
+		      var fileTime = new Date(stat.ctime).getTime();
+		      if (fileTime > endTime) {
+		        fs.unlink(tmpDir+'/'+file, function(err){if(err)console.log(err)});
+		      }
+		    });
+		  }
 	  });
 	});	
 }
