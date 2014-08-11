@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var scrap = require('scrap');
-var slugify = require('slug');
+var request = require('request');
 var iconv = require('iconv-lite');
+var cheerio = require('cheerio');
+var slugify = require('slug');
 var fs = require('fs');
 
 var tmpDir = __dirname+'/../public/tmp';
@@ -62,29 +63,25 @@ router.post('/', function(req, res) {
 	};
 
 	/**********************************************************************/
-
-	scrap(url, function(err, $, code, html, resp) {
-		// scrap once the page
+	request({url: url, encoding: null}, function(err, code, html) {
 		if (err) {
 			res.send(500,err);
 		} else {
+			var $ = cheerio.load(html);
 			// try to find the page encoding via http-equiv tag and via meta tag
 			if($('head meta[http-equiv=\'Content-Type\']').length > 0) {
 				var charset = $('head meta[http-equiv=\'Content-Type\']').attr('content').match(/charset=(.*)/)[1].toLowerCase();
-				scrap({url: url, encoding: null}, function(err, $, code, html, resp) {
-					storeAndSend(iconv.decode(html, charset), charset);
-				});
+				storeAndSend(iconv.decode(html, charset), charset);
 			} else if ($('head meta[charset]').length > 0){
 				var charset = $('head meta[charset]').attr('charset').toLowerCase();
-				scrap({url: url, encoding: null}, function(err, $, code, html, resp) {
-					storeAndSend(iconv.decode(html, charset), charset);
-				});
+				storeAndSend(iconv.decode(html, charset), charset);
 			} else {
 				// assume its utf-8
 				storeAndSend(html, 'utf-8');
 			}
 		}
 	});
+
 	collectGarbage();
 });
 

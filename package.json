@@ -28,7 +28,6 @@
     "less-middleware": "1.0.x",
     "morgan": "~1.0.0",
     "request": "~2.40.0",
-    "scrap": "~0.1.0",
     "slug": "~0.5.0",
     "static-favicon": "~1.0.0"
   }
