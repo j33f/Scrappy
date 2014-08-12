@@ -494,12 +494,14 @@ $(function(){
 			;
 			console.log(json);
 		})
-		.on('done', function(message){
-			var json = JSON.parse(message);
-			console.log('> Done');
-			$scrapProgressLabel.html('Done !');
-			$('#scrap-modal .progress-bar').removeClass('active').addClass('progress-bar-success');
-			console.log(json);
+		.on('scrap done', function() {
+			$scrapProgressLabel.html('Scrapping done... Saving...');
+			$('#scrap-modal .progress-bar').addClass('progress-bar-info');			
+		})
+		.on('done', function(file){
+			$scrapProgressLabel.html('All done ! Redirecting to the next step...');
+			console.log(file);
+			$('#scrap-modal .progress-bar').removeClass('active progress-bar-info').addClass('progress-bar-success');			
 		})
 	;
 

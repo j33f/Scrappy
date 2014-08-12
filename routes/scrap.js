@@ -4,8 +4,13 @@ var request = require('request');
 var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
 var urls = require('url');
+var path = require('path');
+var fs = require('fs');
+var uuid = require('node-uuid');
 
 var actions = require('./libs/actions');
+
+var tmpDir = path.join(__dirname, '../public/tmp');;
 
 /******************************************************************************/
 
@@ -62,8 +67,15 @@ var scrap = function(socket, json, res) {
 	  		// we do have some more urls to scrap
 	  		doScrap();
 	  	} else {
-	  		if (socket !== null) socket.emit('done', JSON.stringify(project.pagination));
-	  		if (res) res.json(project);
+	  		// process is done
+	  		if (socket !== null) socket.emit('scrap done');
+	  		// save the project object to a file
+	  		var fileName = uuid.v4() + '.json';
+	  		var file = path.join(tmpDir,fileName);
+	  		fs.writeFile(file, JSON.stringify(project, null, '\t\t'), function(){
+	  			if (socket !== null) socket.emit('done', fileName);
+	  			if (res) res.redirect('/tmp/' + fileName);
+	  		});
 	  	}
 		});
 	}

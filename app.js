@@ -71,7 +71,7 @@ var sio = io.listen(server);
 
 sio.sockets.on('connection', function(socket) {
     socket.on('scrap', function(json) {
-        scrap(socket, json);
+        scrap.scrap(socket, json);
     });
 });
 
