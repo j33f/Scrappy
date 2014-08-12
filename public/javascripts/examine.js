@@ -1,4 +1,12 @@
 var $page;
+var defaultOptions = { // default Scrappy options
+	skipOrigin: true
+	, limitPagination: false
+	, limitPaginationTo: 0
+	, avoidDuplicates: false
+};
+var options = {}; // current options, will be initialized later in the script
+var actions = {};
 
 var cleanup = function(selector) {
 	// cleanup a selector by removing parents that have no id attribute but the last one in selector
@@ -16,7 +24,18 @@ var cleanup = function(selector) {
 	return newS.reverse().join(' ');
 }
 
-var actions = {};
+var setOptions = function(defOptions, options) {
+	// set the user options to the default ones
+	// _options are the default ones
+	if (!options || typeof options != 'object') {
+		var options = {};
+	}
+	var _options = JSON.parse(JSON.stringify(defOptions));
+	for (var key in options) {
+		_options[key] = options[key];
+	}
+	return _options;
+};
 
 $(function(){
 	(function(old) {
@@ -130,6 +149,7 @@ $(function(){
 			url: url
 			, charset: charset
 			, actions: actions
+			, options: options
 			, history: history
 		};
 		localStorage['scrappyActions'] = JSON.stringify(ls);
@@ -142,6 +162,33 @@ $(function(){
 		}
 
 	}
+
+	// options UI
+	$('.btn-toggle.radio').click(function() {
+    $(this).find('.btn').toggleClass('active');      
+	});
+	$('.btn-toggle.radio.toggleform').click(function() {
+    $('#' + $(this).data('target')).collapse('toggle');      
+	});
+	$('.btn.reset').click(function(){
+		var $form = $(this).parents('form');
+		$('.active', $form).removeClass('active');
+		$('.default', $form).addClass('active');
+		$('input', $form).val($(this).data('defaultvalue'));
+		$('.collapse.form').collapse('hide');
+	});
+
+	var setOptionsUI = function() {
+		for (var i in options) {
+			if (i == 'limitPaginationTo') {
+				$('#limitPaginationTo').val(options.limitPaginationTo);
+			} else if(options[i] != defaultOptions[i]) {
+				$('#' + i).click();
+			}
+		}
+	}
+
+	/***********************************************************************/
 	var pageOffset = $('#page').offset();
 
 	$page = $('#page').contents(); // $page is the iframe content
@@ -361,6 +408,29 @@ $(function(){
 		}
 	});	
 
+	// getting options
+	$('.btn-toggle.radio').click(function() {
+		var optionName = $(this).data('option');
+		options[optionName] = !options[optionName];
+		$('#projectjson').val(JSON.stringify({
+				url: url
+				, charset: charset
+				, actions: actions
+				, history: history
+				, options: options
+			}));		
+	});
+	$('#projectOptions input').on('keyup, change, click', function(){
+		options[$(this).data('option')] = $(this).val();
+		$('#projectjson').val(JSON.stringify({
+				url: url
+				, charset: charset
+				, actions: actions
+				, history: history
+				, options: options
+			}));		
+	});
+
 	$('#saveproject').click(function(){
 		if (!gotLocalStorage()) {
 			bootbox.alert('Your current browser seems to be a beautiful piece of holly crap, please, consider <a href="http://browsehappy.com/">downloading an up to date one</a>.');
@@ -381,16 +451,22 @@ $(function(){
 		var project = ls[load];
 		actions = project.actions;
 		history = project.history;
+		options = setOptions(defaultOptions, project.options);
 		drawActionsTable();
+		setOptionsUI();
  		$('#projectjson').val(JSON.stringify({
 				url: url
 				, charset: charset
 				, actions: actions
 				, history: history
+				, options: options
 			}));
-		$('#selectorslisttab, #nextstepstab').show().effect('highlight', {}, 2000);
+		$('#selectorslisttab, #nextstepstab, #optionstab').show().effect('highlight', {}, 2000);
 		$('#project').show().find('strong').html(load);
  		$('.savechanges').show();
+	} else {
+		// set default options
+		options = setOptions(defaultOptions, project.options);
 	}
 
 /*

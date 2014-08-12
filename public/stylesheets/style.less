@@ -1,5 +1,8 @@
 @import (css) "bootstrap.min.css";
 @import (css) "bootstrap-theme.min.css";
+@import (reference) "mixins.less";
+@import (reference) "variables.less";
+@import (reference) "buttons.less";
 
 body { padding-top: 50px;}
 .alert {padding: 8px 12px;}
@@ -10,8 +13,26 @@ body { padding-top: 50px;}
   text-overflow: ellipsis;
 }
 
- .minHeight {
- 	min-height: 100px;
- 	padding-bottom: 1em;
- 	border-bottom: 1px solid #eee;
- }
+.minHeight {
+	min-height: 100px;
+	padding-bottom: 1em;
+	border-bottom: 1px solid #eee;
+}
+
+big {
+	font-size: 1.4em;
+	font-weight: bold;
+}
+
+.btn.on {
+	.btn-default;
+	&.active {
+		.btn-success;
+	}
+}
+.btn.off {
+	.btn-default;
+	&.active {
+		.btn-danger;
+	}
+}

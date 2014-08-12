@@ -43,6 +43,7 @@
       <ul id="tabnav" class="nav nav-tabs" role="tablist">
         <li id="examinetab" class="active"><a href="#examine" role="tab" data-toggle="tab">Examine</a></li>
         <li id="selectorslisttab" style="display:none;"><a href="#selectorslist" role="tab" data-toggle="tab">Selectors to use <span class="badge" id="actionscount">0</span></a></li>
+        <li id="optionstab"><a href="#options" role="tab" data-toggle="tab">Options</a></li>
         <li id="nextstepstab" style="display:none;"><a href="#nextsteps" role="tab" data-toggle="tab">Next steps</a></li>
       </ul>
 
@@ -96,6 +97,115 @@
 
             </tbody>
           </table>
+        </div>        
+        <!-------------------------------------------------------------------->
+        <div class="tab-pane fade" id="options">          
+          <p>Some options can set for this project, choose them carefully.</p>
+          <form id="projectOptions">
+            <div class="row">
+              <div class="col-md-10">
+                <p class="alert alert-info" role="alert"><strong>Note:</strong> Those options are saved when changed.</p>
+              </div>
+              <div class="col-md-2">
+                <div class="pull-right">
+                  <button type="reset" class="btn btn-primary reset">Set default values</button>
+                </div>              
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 collapse" id="skiporigininfos">
+                <div class="well">
+                  <p>Usually, when there is some pagination links, you start to scrap the 1<sup>st</sup> page. Sometimes, this is a problem, because some pagination system will use another url to go back to the first page. Skipping the origin url (the one you are using right now in Scrappy).</p>
+                  <p> Activating this option will tell Scrappy to skip the origin url from the data scrapping process, avoiding to have falsy duplicates data, when you have a selector set as pagination link.</p>
+                  <p>On by default</p>
+                </div>
+              </div>
+            </div>
+
+          <hr>
+
+            <div class="row">
+              <div class="col-md-10">
+                <big>Skip the origin url</big> <a data-toggle="collapse" href="#skiporigininfos"><strong class="glyphicon glyphicon-question-sign"></strong></a>
+              </div>
+              <div class="col-md-2">
+                <div id="skipOrigin" class="btn-group btn-toggle radio pull-right" data-toggle="buttons" data-option="skipOrigin">
+                  <label class="btn on default active">
+                    <input type="radio" name="skipOrigin" value="1" checked="checked"> On
+                  </label>
+                  <label class="btn off">
+                    <input type="radio" name="skipOrigin" value="0"> OFF
+                  </label>
+                </div>              
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 collapse" id="skiporigininfos">
+                <div class="well">
+                  <p>Usually, when there is some pagination links, you start to scrap the 1<sup>st</sup> page. Sometimes, this is a problem, because some pagination system will use another url to go back to the first page. Skipping the origin url (the one you are using right now in Scrappy).</p>
+                  <p> Activating this option will tell Scrappy to skip the origin url from the data scrapping process, avoiding to have falsy duplicates data, when you have a selector set as pagination link.</p>
+                  <p>On by default</p>
+                </div>
+              </div>
+            </div>
+
+          <hr>
+
+            <div class="row">
+              <div class="col-md-10">
+                <big>Limit pagination</big> <a data-toggle="collapse" href="#limitPaginationinfos"><strong class="glyphicon glyphicon-question-sign"></strong></a>
+                <div class="collapse form-group form" id="limitPaginationform">
+                  <label for="limitPaginationTo">Limit pagination to this number of pages:</label>
+                  <input type="number" class="form-control" name="limitPaginationTo" id="limitPaginationTo" value="0" data-defaultvalue="0" data-option="limitPaginationTo">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div id="limitPagination" class="btn-group btn-toggle radio pull-right toggleform" data-toggle="buttons" data-target="limitPaginationform" data-option="limitPagination">
+                  <label class="btn on">
+                    <input type="radio" name="limitPagination" value="1"> On
+                  </label>
+                  <label class="btn off default active">
+                    <input type="radio" name="limitPagination" value="0" checked="checked"> OFF
+                  </label>
+                </div>              
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 collapse" id="avoidDuplicatesinfos">
+                <div class="well">
+                  <p>This option will tell to Scrappy to only scrap the X first pages when you have a selector set as pagination link.</p>
+                  <p>Off by default</p>
+                </div>
+              </div>
+            </div>
+
+          <hr>
+
+            <div class="row">
+              <div class="col-md-10">
+                <big>Avoid duplicates</big> <a data-toggle="collapse" href="#avoidDuplicatesinfos"><strong class="glyphicon glyphicon-question-sign"></strong></a>
+              </div>
+              <div class="col-md-2">
+                <div id="avoidDuplicates" class="btn-group btn-toggle radio pull-right" data-toggle="buttons" data-option="avoidDuplicates">
+                  <label class="btn on">
+                    <input type="radio" name="avoidDuplicates" value="1"> On
+                  </label>
+                  <label class="btn off default active">
+                    <input type="radio" name="avoidDuplicates" value="0" checked="checked"> OFF
+                  </label>
+                </div>              
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 collapse" id="avoidDuplicatesinfos">
+                <div class="well">
+                  <p>When activated, this option tells Scrappy to compare each record to others (for example, each rows of a table).</p>
+                  <p class="alert alert-warning" role="alert"><strong>Warning!</strong> Activating this option could consume a large amout of memory and considerably lengthen the process.</p>
+                  <p>Off by default</p>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
         <!-------------------------------------------------------------------->
         <div class="tab-pane fade" id="nextsteps">

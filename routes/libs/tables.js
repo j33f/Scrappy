@@ -4,12 +4,12 @@ var optionsUtils = require('./options');
 
 var getRows = function(table, options) {
 	// get options
-	var _options = {
+	var defaultOptions = {
 		skipFirstRow: false
 		, smartHeaders: true
 		, stripHtml: true
 	};
-	var options = optionsUtils.set(_options, options);
+	var options = optionsUtils.set(defaultOptions, options);
 
 	// load the html in cheerio $
 	var $ = cheerio.load(table);

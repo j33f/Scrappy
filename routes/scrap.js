@@ -26,6 +26,7 @@ router.post('/', function(req, res) {
 	  		// perform all actions and store them into the datastore
 	  		if (actions[project.actions[name].action]) { // ensure that the action really exists
 	  			project.data[name] = actions[project.actions[name].action](html, project.actions[name].selector); // perform the action
+	  			// Duplicates
 	  		}
 	  	}
 	  	// collects all pagination links hrefs
