@@ -4,7 +4,6 @@ var request = require('request');
 var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
 var urls = require('url');
-var async = require('async').actions;
 
 var actions = require('./libs/actions');
 
