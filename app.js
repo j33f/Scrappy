@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/examine', examine);
+app.use('/scrap', scrap.router);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

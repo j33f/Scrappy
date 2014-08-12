@@ -1,3 +1,5 @@
+var express = require('express');
+var router = express.Router();
 var request = require('request');
 var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
@@ -7,17 +9,17 @@ var actions = require('./libs/actions');
 
 /******************************************************************************/
 
-var scrap = function(socket, json) {
+var scrap = function(socket, json, res) {
   var project = JSON.parse(json); // load the scrapping project
   project.data = {}; // the data scrapped from url
   project.pagination = {urls:[project.url], selectors:[], scrapped: 0}; // the pagination links if any
   																													 // {urls: [array of urls to scrap, the first one is the project url], selectors: [array of links selectors], scrapped: number of pagination urls scrapped}
-	socket.emit('start');
+	if (socket !== null) socket.emit('start');
 
 	var doScrap = function() {
 		// scrap the pages to scrap
-		console.log('> Scrapping url '+(project.pagination.scrapped +1 )+'/'+project.pagination.urls.length);
-		socket.emit('progress', JSON.stringify({current:(project.pagination.scrapped +1), total: project.pagination.urls.length}));
+		if (socket !== null) socket.emit('progress', JSON.stringify({current:(project.pagination.scrapped +1), total: project.pagination.urls.length}));
+		console.log('> url ' + (project.pagination.scrapped +1) + '/' + project.pagination.urls.length);
 
 		var url = project.pagination.urls[project.pagination.scrapped]; // use the current url in list
 
@@ -60,8 +62,8 @@ var scrap = function(socket, json) {
 	  		// we do have some more urls to scrap
 	  		doScrap();
 	  	} else {
-	  		console.log('> Done.');
-	  		socket.emit('done', JSON.stringify(project.pagination));
+	  		if (socket !== null) socket.emit('done', JSON.stringify(project.pagination));
+	  		if (res) res.json(project);
 	  	}
 		});
 	}
@@ -76,7 +78,12 @@ var scrap = function(socket, json) {
   }
 
   // lest do the scrap things
-  doScrap(); // this function outputs the result
+  doScrap();
 };
 
-module.exports = scrap;
+router.post('/', function(req, res){
+	scrap(null, req.param('project'), res);
+});
+
+module.exports.scrap = scrap;
+module.exports.router = router;
