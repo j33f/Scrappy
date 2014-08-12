@@ -10,7 +10,7 @@ var uuid = require('node-uuid');
 
 var actions = require('./libs/actions');
 
-var tmpDir = path.join(__dirname, '../public/tmp');;
+var tmpDir = path.join(__dirname, '../public/tmp');
 
 /******************************************************************************/
 
@@ -72,7 +72,7 @@ var scrap = function(socket, json, res) {
 	  		// save the project object to a file
 	  		var fileName = uuid.v4() + '.json';
 	  		var file = path.join(tmpDir,fileName);
-	  		fs.writeFile(file, JSON.stringify(project, null, '\t\t'), function(){
+	  		fs.writeFile(file, JSON.stringify(project, null, '\t'), function(){
 	  			if (socket !== null) socket.emit('done', fileName);
 	  			if (res) res.redirect('/tmp/' + fileName);
 	  		});

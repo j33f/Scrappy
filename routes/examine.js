@@ -5,8 +5,9 @@ var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
 var slugify = require('slug');
 var fs = require('fs');
+var path = require('path');
 
-var tmpDir = __dirname+'/../public/tmp';
+var tmpDir = path.join(__dirname, '../public/tmp');
 
 var collectGarbage = function() {
 	// delete temp files older than 24h
@@ -18,13 +19,13 @@ var collectGarbage = function() {
 		}
 	  files.forEach(function(file, index) {
 	  	if (file != '.placeholder') {
-		    fs.stat(tmpDir+'/'+file, function(err, stat) {
+		    fs.stat(path.join(tmpDir, file), function(err, stat) {
 		      if (err) {
 		        return console.error(err);
 		      }
 		      var fileTime = new Date(stat.ctime).getTime();
 		      if (fileTime > endTime) {
-		        fs.unlink(tmpDir+'/'+file, function(err){if(err)console.log(err)});
+		        fs.unlink(path.join(tmpDir, file), function(err){if(err)console.log(err)});
 		      }
 		    });
 		  }
@@ -45,9 +46,9 @@ router.post('/', function(req, res) {
 			fs.mkdirSync(tmpDir);
 		} catch (e) {/* do nothing */}
 
-		fs.unlink(tmpDir+'/'+tmp, function(){
+		fs.unlink(path.join(tmpDir, tmp), function(){
 			// unlink to refresh the file ctime of the page stored for examination in the iframe (the only way to do that)
-			fs.writeFile(tmpDir+'/'+tmp, html, function() {
+			fs.writeFile(path.join(tmpDir, tmp), html, function() {
 				// render when the tmp file has been written and available fot http queries
 				var params = {
 			  	host: req.protocol + '://' + req.get('host') // the current server host, ease the ressources access
@@ -92,4 +93,4 @@ router.post('/', function(req, res) {
 		, history: JSON.stringify(req.param('history'))
 	});
 });*/
-module.exports = router
+module.exports = router;

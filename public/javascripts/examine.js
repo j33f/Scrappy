@@ -500,7 +500,7 @@ $(function(){
 		})
 		.on('done', function(file){
 			$scrapProgressLabel.html('All done ! Redirecting to the next step...');
-			console.log(file);
+			document.location = host + '/format/' + file;
 			$('#scrap-modal .progress-bar').removeClass('active progress-bar-info').addClass('progress-bar-success');			
 		})
 	;
