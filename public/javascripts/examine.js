@@ -8,6 +8,8 @@ var defaultOptions = { // default Scrappy options
 var options = {}; // current options, will be initialized later in the script
 var actions = {};
 
+var sio = io.connect(host); // initiate the socket
+
 var cleanup = function(selector) {
 	// cleanup a selector by removing parents that have no id attribute but the last one in selector
 	var s = selector.split(' ');
@@ -378,7 +380,7 @@ $(function(){
 		} else {
 			actions[thisAction.niceName] = thisAction;
 			drawActionsTable();
-			$('#projectjson').val(JSON.stringify({
+			$('#doscrap').data('projectjson', JSON.stringify({
 				url: url
 				, charset: charset
 				, actions: actions
@@ -396,7 +398,7 @@ $(function(){
 
 	$('#actions-list').on('click', '.remove', function() {
 		delete actions[$(this).data('action')];
-		$('#projectjson').val(JSON.stringify(actions));
+		$('#doscrap').data('projectjson', JSON.stringify(actions));
 		if (Object.keys(actions).length > 0) {
 			$(this).parents('tr').hide(200, function(){
 				$('#actionscount').html(Object.keys(actions).length);
@@ -412,7 +414,7 @@ $(function(){
 	$('.btn-toggle.radio').click(function() {
 		var optionName = $(this).data('option');
 		options[optionName] = !options[optionName];
-		$('#projectjson').val(JSON.stringify({
+		$('#doscrap').data('projectjson', JSON.stringify({
 				url: url
 				, charset: charset
 				, actions: actions
@@ -422,7 +424,7 @@ $(function(){
 	});
 	$('#projectOptions input').on('keyup, change, click', function(){
 		options[$(this).data('option')] = $(this).val();
-		$('#projectjson').val(JSON.stringify({
+		$('#doscrap').data('projectjson', JSON.stringify({
 				url: url
 				, charset: charset
 				, actions: actions
@@ -454,7 +456,7 @@ $(function(){
 		options = setOptions(defaultOptions, project.options);
 		drawActionsTable();
 		setOptionsUI();
- 		$('#projectjson').val(JSON.stringify({
+ 		$('#doscrap').data('projectjson', JSON.stringify({
 				url: url
 				, charset: charset
 				, actions: actions
@@ -466,8 +468,40 @@ $(function(){
  		$('.savechanges').show();
 	} else {
 		// set default options
-		options = setOptions(defaultOptions, project.options);
+		options = setOptions(defaultOptions, {});
 	}
+
+	$('#doscrap').click(function(e) {
+		sio.emit('scrap', $(this).data('projectjson'));
+		$('#scrap-modal').modal({
+			backdrop: 'static'
+			, keyboard: false
+		});
+	});
+	var $scrapProgressLabel = $('#scrap-modal .progressLabel');
+	sio
+		.on('start', function(){
+			console.log('> Start');
+			$scrapProgressLabel.html('Starting...');
+		})
+		.on('progress', function(message){
+			var json = JSON.parse(message);
+			$scrapProgressLabel.html('Scraping page '+ json.current + '/' + json.total);
+			$('#scrap-modal .progress-bar')
+				.attr('aria-valuenow', json.current)
+				.attr('aria-valuemax', json.total)
+				.css('width', (json.current / json.total * 100)+'%')
+			;
+			console.log(json);
+		})
+		.on('done', function(message){
+			var json = JSON.parse(message);
+			console.log('> Done');
+			$scrapProgressLabel.html('Done !');
+			$('#scrap-modal .progress-bar').removeClass('active').addClass('progress-bar-success');
+			console.log(json);
+		})
+	;
 
 /*
 	$('#follow').submit(function(e){

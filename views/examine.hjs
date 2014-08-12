@@ -209,10 +209,7 @@
             <div class="col-md-4">
               <h2>Scrap now</h2>
               <p class="minHeight">You can execute the scrapping right now, then format the output data to get them.</p>
-              <form id="goscrap" action="../scrap" method="post">
-                <input type="hidden" id="projectjson" name="project" value="">
-                <button class="btn btn-primary">Scrap it now !</button>
-              </form>
+              <button class="btn btn-primary" id="doscrap" data-projectjson="">Scrap it now !</button>
             </div>
             <div class="col-md-4">
               <h2>Follow the links</h2>
@@ -266,8 +263,26 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <div class="modal fade" id="scrap-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Scraping in progress</h4>
+          </div>
+          <div class="modal-body">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <span class="progressLabel"></span>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 
     <script>
+      var host = '{{{ host }}}';
       var url = '{{{ url }}}';
       var charset = '{{{ charset }}}'
       var history = {{{ history }}};
@@ -279,6 +294,7 @@
     <script src="{{{ host }}}/javascripts/bootstrap.min.js"></script>
     <script src="{{{ host }}}/javascripts/jquery-ui.min.js"></script>
     <script src="{{{ host }}}/javascripts/bootbox.min.js"></script>
+    <script src="{{{ host }}}/socket.io/socket.io.js"></script>
     <script src="{{{ host }}}/javascripts/examine.js"></script>
   </body>
 </html>

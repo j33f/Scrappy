@@ -1,5 +1,3 @@
-var express = require('express');
-var router = express.Router();
 var request = require('request');
 var iconv = require('iconv-lite');
 var cheerio = require('cheerio');
@@ -9,14 +7,18 @@ var actions = require('./libs/actions');
 
 /******************************************************************************/
 
-router.post('/', function(req, res) {
-  var project = JSON.parse(req.param('project')); // load the scrapping project
+var scrap = function(socket, json) {
+  var project = JSON.parse(json); // load the scrapping project
   project.data = {}; // the data scrapped from url
   project.pagination = {urls:[project.url], selectors:[], scrapped: 0}; // the pagination links if any
   																													 // {urls: [array of urls to scrap, the first one is the project url], selectors: [array of links selectors], scrapped: number of pagination urls scrapped}
+	socket.emit('start');
+
 	var doScrap = function() {
 		// scrap the pages to scrap
 		console.log('> Scrapping url '+(project.pagination.scrapped +1 )+'/'+project.pagination.urls.length);
+		socket.emit('progress', JSON.stringify({current:(project.pagination.scrapped +1), total: project.pagination.urls.length}));
+
 		var url = project.pagination.urls[project.pagination.scrapped]; // use the current url in list
 
 	  request({url: url, encoding: null}, function(err, code, html) {
@@ -59,7 +61,7 @@ router.post('/', function(req, res) {
 	  		doScrap();
 	  	} else {
 	  		console.log('> Done.');
-	  		res.json(project.pagination); // Output the data 'as is' by now for dev
+	  		socket.emit('done', JSON.stringify(project.pagination));
 	  	}
 		});
 	}
@@ -75,6 +77,6 @@ router.post('/', function(req, res) {
 
   // lest do the scrap things
   doScrap(); // this function outputs the result
-});
+};
 
-module.exports = router
+module.exports = scrap;
