@@ -112,15 +112,6 @@
                 </div>              
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-12 collapse" id="skiporigininfos">
-                <div class="well">
-                  <p>Usually, when there is some pagination links, you start to scrap the 1<sup>st</sup> page. Sometimes, this is a problem, because some pagination system will use another url to go back to the first page. Skipping the origin url (the one you are using right now in Scrappy).</p>
-                  <p> Activating this option will tell Scrappy to skip the origin url from the data scrapping process, avoiding to have falsy duplicates data, when you have a selector set as pagination link.</p>
-                  <p>On by default</p>
-                </div>
-              </div>
-            </div>
 
           <hr>
 
@@ -171,7 +162,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12 collapse" id="avoidDuplicatesinfos">
+              <div class="col-md-12 collapse" id="limitPaginationinfos">
                 <div class="well">
                   <p>This option will tell to Scrappy to only scrap the X first pages when you have a selector set as pagination link.</p>
                   <p>Off by default</p>
