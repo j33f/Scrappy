@@ -14,6 +14,7 @@ A simple utility to help scrap things and save them
 - smart pagination links handling
 - detects attributes and offers to scrap them
 - CRUD scrapping projects (use localStorage at the moment)
+- export data to JSON, CSV or ZIP of CSV files
 
 ## Try it now
 
@@ -25,7 +26,5 @@ or try the demo (may not be up to date) http://scrappy-example.herokuapp.com
 
 - handle the colspan for tables
 - maybe handle the rowspan
-- maybe add a way to reconstruct the full URIs for href and src
-
 
 
