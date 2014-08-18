@@ -39,12 +39,25 @@
 
 
   	<div class="container">
+      <h2>Formatting</h2>
+      <p>Here are each dataset, please have a look at them before to download them. You can go back if needed to change your selectors.</p>
+      <p>
+        <a href="javascript:history.back();" class="btn btn-info btn-sm"><strong class="glyphicon glyphicon-arrow-left"></strong> Examine again</a>
+        <a href="{{{ host }}}/format/{{{ file }}}/csv" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-download"></strong> Download as CSV</a>
+        <a href="{{{ host }}}/format/{{{ file }}}/json" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-download"></strong> Download as JSON</a>
+      </p>
+      <div class="progress" id="loading">
+        <div class="progress-bar progress-bar-striped active" style="width: 100%">
+          Loading the data: please wait&hellip;
+        </div>
+      </div>
+
+      <ul id="tabnav" class="nav nav-tabs" role="tablist"></ul>
+      <div id="tabcontents" class="tab-content"></div>
     </div>
     <script>
       var host = '{{{ host }}}';
-      var url = '{{{ url }}}';
       var file = '{{{ file }}}';
-      var data = JSON.parse('{{{ data }}}');
     </script>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -52,5 +65,6 @@
     <script src="{{{ host }}}/javascripts/bootstrap.min.js"></script>
     <script src="{{{ host }}}/javascripts/jquery-ui.min.js"></script>
     <script src="{{{ host }}}/javascripts/bootbox.min.js"></script>
+    <script src="{{{ host }}}/javascripts/format.js"></script>
   </body>
 </html>    

@@ -33,8 +33,9 @@ var scrap = function(socket, json, res) {
 	  	for (var name in project.actions) {
 	  		// perform all actions and store them into the datastore
 	  		if (actions[project.actions[name].action]) { // ensure that the action really exists
-	  			project.data[name] = actions[project.actions[name].action](html, project.actions[name].selector); // perform the action
-	  			// Duplicates
+	  			if (!project.data[name]) { project.data[name] = []; } // create the datastore if needed
+	  			var actionResult = actions[project.actions[name].action](html, project.actions[name].selector); // perform the action and collect data
+	  			project.data[name].concat(actionResult); // add the collected data to the datastore
 	  		}
 	  	}
 	  	// collects all pagination links hrefs
@@ -47,7 +48,7 @@ var scrap = function(socket, json, res) {
 	  				// some time the anchors are just anchor !
 		  			if (href.trim() != '') {
 		  				// sometime hrefs are invalids or relatives : reconstruct an absolute url
-		  				// TODO : take advantage or the base url meta !
+		  				// TODO : take advantage of the base url meta !
 		  				var url = urls.parse(href, true);
 		  				if (!url.hostname) {
 		  					href = urls.resolve(project.url, href);
@@ -70,11 +71,12 @@ var scrap = function(socket, json, res) {
 	  		// process is done
 	  		if (socket !== null) socket.emit('scrap done');
 	  		// save the project object to a file
-	  		var fileName = uuid.v4() + '.json';
+	  		var fileId = uuid.v4();
+	  		var fileName = fileId + '.json';
 	  		var file = path.join(tmpDir,fileName);
 	  		fs.writeFile(file, JSON.stringify(project, null, '\t'), function(){
-	  			if (socket !== null) socket.emit('done', fileName);
-	  			if (res) res.redirect('/tmp/' + fileName);
+	  			if (socket !== null) socket.emit('done', fileId);
+	  			if (res) res.redirect('/tmp/' + fileId);
 	  		});
 	  	}
 		});
