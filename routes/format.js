@@ -4,7 +4,8 @@ var router = express.Router();
 var fs = require('fs');
 var path = require('path');
 
-var zip = new require('node-zip')();
+var CSV = require('comma-separated-values');
+var archiver = require('archiver');
 
 var tmpDir = path.join(__dirname, '/../public/tmp');
 
@@ -44,38 +45,26 @@ router.get('/:file/csv', function(req, res) {
 	fs.readFile(path.join(tmpDir, req.params.file+'.json'), function(err, content) {
 		if (err) throw err;
 		var project = JSON.parse(content);
-		var data = project.data;
-		var files = {};
-		for (var name in data) {
-			files[name] = [];
-			if (toType(project.data[name][0][0]) == 'object') {
-				var type = 'object';
-				files[name].push(Object.keys(project.data[name][0][0]).join(','));
-			} else {
-				var type = 'array';
-			}
-			for (var i in project.data[name]) {
-				for (var j in project.data[name][i]) {
-					if (type == 'object')  {
-						files[name].push(Object.values(project.data[name][i][j]).join(','));
-					} else {
-						files[name].push(project.data[name][i][j].join(','));
-					}
-				}
-			}
-		}
-		if (Object.keys(files).length == 1) {
+		if (Object.keys(project.data).length == 1) {
 			res.type('text/csv');
 			res.set('Content-Disposition','attachment; filename="scrap.csv"');
-			res.send(files[name].join('\n'));
+			var csvFile = new CSV(project.data[Object.keys(project.data)[0]], { header: true }).encode();
+			res.send(csvFile);
 		} else {
-			for (var name in files) {
-				zip.file(name +'.csv', files[name].join('\n'));
-			}
-			var zipFile = zip.generate({compression:'DEFLATE'});
-			res.type('application/x-zip');
+			res.type('application/zip');
 			res.set('Content-Disposition','attachment; filename="scrap.zip"');
-			res.send(new Buffer(zipFile));
+
+			var archive = archiver('zip'); // create a zip archive
+			archive.on('error', function(err) {
+				throw err; // omg an error !
+			});
+			archive.pipe(res); // pipe the archive output to the Express ressponse object
+			for (var name in project.data) {
+				// for each datastore, create a CSV concent and add it to the zip
+				var csvFile = new CSV(project.data[name], { header: true }).encode();
+				archive.append(csvFile, {name: name +'.csv'});
+			}
+			archive.finalize(); // zip it ! (and send it)
 		}
 	});
 });

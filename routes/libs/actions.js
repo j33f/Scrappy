@@ -7,15 +7,15 @@ var getAll = function(action, html, selector, options) {
 	var $ = cheerio.load(html);
 	var result = [];
 	$(selector).each(function(index, table){
-		result.push(action($(table).html(), options));
+		result = result.concat(action($(table).html(), options));
 	});
 	return result;	
 }
 
 var Actions = {
-	"_Model" : 
+	/*
+	"action name" : 
 		function(html, selector) {
-			/*
 			Model of all actions
 			var options = { options for the action funtion to call};
 			return getAll(
@@ -24,14 +24,12 @@ var Actions = {
 				, selector var (mandatory)
 				, options (optional)
 			);
-			*/
-			return null;
 		}
-
+	*/
 	// Tables
 	//*******************************************************************************
 
-	, "tables to arrays of text" : 
+	  "tables to arrays of text" : 
 		function(html, selector) {
 			var options = {skipFirstRow: true, smartHeaders: false, stripHtml: true};
 			return getAll(tables.getRows, html, selector, options)

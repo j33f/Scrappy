@@ -33,9 +33,10 @@ var scrap = function(socket, json, res) {
 	  	for (var name in project.actions) {
 	  		// perform all actions and store them into the datastore
 	  		if (actions[project.actions[name].action]) { // ensure that the action really exists
-	  			if (!project.data[name]) { project.data[name] = []; } // create the datastore if needed
+	  			if (project.data[name] == undefined) { project.data[name] = []; } // create the datastore if needed
 	  			var actionResult = actions[project.actions[name].action](html, project.actions[name].selector); // perform the action and collect data
-	  			project.data[name].concat(actionResult); // add the collected data to the datastore
+	  			console.log(actionResult);
+	  			project.data[name] = project.data[name].concat(actionResult); // add the collected data to the datastore
 	  		}
 	  	}
 	  	// collects all pagination links hrefs
