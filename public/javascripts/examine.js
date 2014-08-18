@@ -285,69 +285,21 @@ $(function(){
 
 		$action.html('<option value="" selected="selected" disabled="disabled">Please choose one</option>');
 		$attributes.html('');
-
+		// construct the select element to choose the proper actions to display
 		var specialTagFound = false;
-
-		if ($.inArray('a', tags) >= 0) {
-			specialTagFound = true;
-			var acount = countTags('a', $elements);
-			if (acount == 1) {
-				$action.append('<option value="follow and repeat">Follow the link and repeat other actions</option>');
-				$action.append('<option value="follow and apply new">Follow the link and apply new actions</option>');
-			} else {
-				$action.append('<option value="follow and repeat">Follow the links and repeat other actions (pagination)</option>');
-				$action.append('<option value="follow and apply new">Follow the links and apply new actions</option>');
-			}
-			$action.append('<option value="get href">Get the url</option>');
-			$action.append('<option value="get link text">Get the link text</option>');
-		}
-		if ($.inArray('img', tags) >= 0) {
-			specialTagFound = true;
-			$action.append('<option value="get src">Get the image(s) address</option>');
-			$action.append('<option value="get data url">Get the image(s) data URI</option>');
-		}
-		if ($.inArray('p', tags) >= 0) {
-			specialTagFound = true;
-			var pcount = countTags('p', $elements);
-			if (pcount > 1) {
-				$action.append('<option value="get html">Get each paragraph HTML content separately</option>');
-				$action.append('<option value="get text">Get each paragraph content separately (strip tags)</option>');
-				$action.append('<option value="get concatenated html">Get each paragraph HTML content and concat them</option>');
-				$action.append('<option value="get concatenated text">Get each paragraph content separately and concat them (strip tags)</option>');
-			} else {
-				$action.append('<option value="get html">Get the paragraph HTML content</option>');
-				$action.append('<option value="get text">Get the paragraph content (strip tags)</option>');				
+		for (var element in actionsList.specials) {
+			if ($.inArray(element, tags) >= 0) {
+				specialTagFound = true;
+				for (var i in actionsList.specials[element]) {
+					$action.append('<option value="' + actionsList.specials[element][i].action + '">' + actionsList.specials[element][i].label + '</option>');
+				}
 			}
 		}
-		if ($.inArray('table', tags) >= 0) {
-			specialTagFound = true;
-			var pcount = countTags('table', $elements);
-			if (pcount > 1) {
-				$action.append('<option value="tables to arrays of html">Store each table as an array of html strings (strip headers if any)</option>');
-				$action.append('<option value="tables to arrays of html with headers">Store each table as an array of html strings (use headers if any)</option>');
-				
-				$action.append('<option value="tables to arrays of text">Store each table as an array of text strings (strip headers if any - html stripped)</option>');
-				$action.append('<option value="tables to arrays of text with headers">Store each table as an array of text strings (use headers if any - html stripped)</option>');
-				
-				$action.append('<option value="concatenate tables to array of html">Concatenate each table as an array of html strings (strip headers if any)</option>');
-				$action.append('<option value="concatenate tables to array of html with headers">Concatenate each table as an array of html strings (use the fist table headers if any)</option>');
-				
-				$action.append('<option value="concatenate tables to array of text">Concatenate each table as an array of text strings (strip headers if any - html stripped)</option>');
-				$action.append('<option value="concatenate tables to array of text with headers">Concatenate each table as an array of text strings (use the fist table headers if any - html stripped)</option>');
-			} else {
-				$action.append('<option value="tables to arrays of html">Store the table as an array of html strings (strip headers if any)</option>');
-				$action.append('<option value="tables to arrays of html with headers">Store table table as an array of html strings (use headers if any)</option>');
-				$action.append('<option value="tables to arrays of text">Store the table as an array of text strings (strip headers if any - html stripped)</option>');
-				$action.append('<option value="tables to arrays of text with headers">Store the table as an array of text strings (use headers if any - html stripped)</option>');
-			}
-		}
-
 		if (!specialTagFound) {
-			$action.append('<option value="get html">Get the element HTML content</option>');
-			$action.append('<option value="get text">Get the element content (strip tags)</option>');				
+			for (var i in actionsList.defaults) {
+				$action.append('<option value="' + actionsList.defaults[i].action + '">' + actionsList.defaults[i].label + '</option>');
+			}
 		}
-		$action.append('<option value="get attributes">None of these, just get attributes</option>');				
-
 		if (tags.length == 1) {
 			var attr = $elements.first().attr();
 			if (Object.keys(attr).length > 0) {

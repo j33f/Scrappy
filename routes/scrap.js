@@ -34,8 +34,7 @@ var scrap = function(socket, json, res) {
 	  		// perform all actions and store them into the datastore
 	  		if (actions[project.actions[name].action]) { // ensure that the action really exists
 	  			if (project.data[name] == undefined) { project.data[name] = []; } // create the datastore if needed
-	  			var actionResult = actions[project.actions[name].action](html, project.actions[name].selector); // perform the action and collect data
-	  			console.log(actionResult);
+	  			var actionResult = actions[project.actions[name].action].do(html, project.actions[name].selector); // perform the action and collect data
 	  			project.data[name] = project.data[name].concat(actionResult); // add the collected data to the datastore
 	  		}
 	  	}
@@ -85,7 +84,7 @@ var scrap = function(socket, json, res) {
 
   // look for pagination links to follow
   for (var name in project.actions) {
-  	if (project.actions[name].action == 'follow and repeat') {
+  	if (project.actions[name].action == 'pagination') {
   		// we have a pagination rule : store it and delete it from the common actions to perform 
   		project.pagination.selectors.push(project.actions[name].selector);
   		delete project.actions[name];

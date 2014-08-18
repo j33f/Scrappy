@@ -7,6 +7,8 @@ var slugify = require('slug');
 var fs = require('fs');
 var path = require('path');
 
+var actions = require('./libs/actions');
+
 var tmpDir = path.join(__dirname, '../public/tmp');
 
 var collectGarbage = function() {
@@ -33,6 +35,26 @@ var collectGarbage = function() {
 	});	
 }
 
+var listActions = function() {
+	// list the actions to display them in the UI
+	var specials = {};
+	var defaults = [];
+	for (var action in actions) {
+		for (var i in actions[action].tags) {
+			var tag = actions[action].tags[i];
+			if (tag != '') {
+				if (specials[tag] == undefined) {
+					specials[tag] = [];
+				}
+				specials[tag].push({action: action, label: actions[action].label});
+			} else {
+				defaults.push({action: action, label: actions[action].label});
+			}
+		}
+	}
+	return JSON.stringify({specials: specials, defaults: defaults}).replace("'", "\\'");
+}
+
 /******************************************************************************/
 
 router.post('/', function(req, res) {
@@ -57,6 +79,7 @@ router.post('/', function(req, res) {
 			  	, tmp: tmp // the tmp file name to display into the iframe
 			  	, load: "'" +(req.param('load') || '') + "'" // the project that we want to load from user localStorage
 			  	, charset: charset // the to be scrapped page charset
+			  	, actions: listActions()
 			  };
 			  res.render('examine', params);
 			});
