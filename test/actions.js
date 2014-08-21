@@ -24,10 +24,8 @@ describe('Actions', function() {
 			it('should have a "do"  method', function(){
 				actions[action].should.have.property('do').with.type('function');
 			});
-			describe('#do callback', function(){
-				it('should return an array', function(){
-					actions[action].do('', 'div').should.be.type('object').with.lengthOf(0);
-				});
+			it('"do" callback should return an array', function(){
+				actions[action].do('', 'div').should.be.type('object').with.lengthOf(0);
 			});
 		});
 	}
