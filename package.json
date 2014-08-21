@@ -9,8 +9,7 @@
   "license": "GPL-3.0+",
   "scripts": {
     "start": "node ./bin/www",
-    "safeStart": "git pull origin master && npm install && npm prune && node ./bin/www",
-    "prepublish": "npm prune",
+    "safeStart": "git pull origin master && npm install && node ./bin/www",
     "test": "./node_modules/.bin/mocha -w"
   },
   "repository": {
