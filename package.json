@@ -11,7 +11,7 @@
     "start": "node ./bin/www",
     "safeStart": "git pull origin master && npm install && npm prune && node ./bin/www",
     "prepublish": "npm prune",
-    "test": "npm install mocha && npm install should && ./node_modules/.bin/mocha -w"
+    "test": "./node_modules/.bin/mocha -w"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,8 @@
     "should": "~4.0.4"
   },
   "dependencies": {
+    "mocha": "~1.21.4",
+    "should": "~4.0.4",
     "archiver": "~0.10.1",
     "body-parser": "~1.0.0",
     "cheerio": "~0.17.0",
