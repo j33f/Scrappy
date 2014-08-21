@@ -5,7 +5,7 @@ A simple utility to help scrap things and save them
 
 [![Build Status](https://travis-ci.org/j33f/Scrappy.svg?branch=master)](https://travis-ci.org/j33f/Scrappy)
 
-**Warning** : work in progress, it's not fully functional yet event if build status is ok !
+**Warning** : work in progress, it's not fully functional yet even if build status is ok !
 
 ## Functionnalities
 
