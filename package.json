@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "safeStart": "git pull origin master && npm install && node ./bin/www",
-    "test": "./node_modules/.bin/mocha -w"
+    "test": "./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
