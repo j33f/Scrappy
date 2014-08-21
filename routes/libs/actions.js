@@ -154,23 +154,6 @@ var Actions = {
 			return getAll(function(){return []}, html, selector, options)
 		}
 	}
-	, "get content as markdown" : {
-	  label : 'Get the content and convert it to Markdown'
-	  , tags: ['p','']
-		, do: function(html, selector) {
-			var options = {};
-			return getAll(function(){return []}, html, selector, options)
-		}
-	}
-	, "get content as markdown and concatenate" : {
-	  label : 'Get the content and convert it to Markdown'
-	  , tags: ['p','']
-		, do: function(html, selector) {
-			var options = {};
-			return getAll(function(){return []}, html, selector, options)
-		}
-	}
-
 };
 
 module.exports = Actions;
