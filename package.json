@@ -4,16 +4,22 @@
   "private": true,
   "author": {
     "name": "Jean-François Vial",
-    "url": "<http://about.me/Jeff_>"
+    "url": "http://about.me/Jeff_"
   },
   "license": "GPL-3.0+",
   "scripts": {
     "start": "node ./bin/www",
-    "safeStart": "git pull origin master && npm install && node ./bin/www"
+    "safeStart": "git pull origin master && npm install && npm prune && node ./bin/www",
+    "prepublish": "npm prune",
+    "test": "./node_modules/.bin/mocha -w"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/j33f/Scrappy.git"
+  },
+  "devDepencies": {
+    "mocha": "~1.21.4",
+    "should": "~4.0.4"
   },
   "dependencies": {
     "archiver": "~0.10.1",

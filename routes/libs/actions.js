@@ -30,7 +30,12 @@ var Actions = {
 	}
 	*/
 
-	  "tables to arrays of text" : {
+	"pagination" : { // pagination mus be here to populate the select in UI but have no real action
+	  label : 'Use those links as pagination links'
+	  , tags: ['a']
+	}
+
+	, "tables to arrays of text" : {
 		  label : 'Store each table as an array of text strings (strip headers if any - html stripped)'
 		  , tags: ['table']
 			, do: function(html, selector) {
@@ -63,10 +68,6 @@ var Actions = {
 		}
 	}
 
-	, "pagination" : { // pagination mus be here to populate the select in UI but have no real action
-	  label : 'Use those links as pagination links'
-	  , tags: ['a']
-	}
 	, "follow and scrap" : {
 	  label : 'Follow each link and scrap the linked page\'s content (by using another project)'
 	  , tags: 'a'
