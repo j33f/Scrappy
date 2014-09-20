@@ -44,8 +44,13 @@ var getImg = function(img, options) {
 		    path: parsedUrl.path
 		});
 		var response = syncRequest.end();
+		console.log('________________');
+		console.dir(response);
+		console.log('________________');
 		if (response.statusCode == 200) {
 			var contentType = response.headers['content-type'] || response.headers['Content-Type'];
+			console.log(contentType);
+			console.log('________________');
 			result = [{src: 'data:' + response.headers['content-type'] + ';base64,' + response.body.toString('base64')}];
 		} else {
 			result = [{src: response.statusCode + ' Error.'}];
