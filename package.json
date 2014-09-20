@@ -21,8 +21,6 @@
     "should": "~4.0.4"
   },
   "dependencies": {
-    "mocha": "~1.21.4",
-    "should": "~4.0.4",
     "archiver": "~0.10.1",
     "body-parser": "~1.0.0",
     "cheerio": "~0.17.0",
@@ -34,11 +32,17 @@
     "html-entities": "~1.0.10",
     "iconv-lite": "~0.4.4",
     "less-middleware": "1.0.x",
+    "mocha": "~1.21.4",
     "morgan": "~1.0.0",
     "node-uuid": "~1.4.1",
     "request": "~2.40.0",
+    "should": "~4.0.4",
     "slug": "~0.5.0",
     "socket.io": "~1.0.6",
     "static-favicon": "~1.0.0"
+  },
+  "optionalDependencies": {
+    "http-sync-win": "0.0.7",
+    "http-sync": "0.0.4"
   }
 }
