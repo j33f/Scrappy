@@ -4,6 +4,7 @@ var cheerio = require('cheerio');
 var tables = require('./tables');
 var a = require('./a');
 var img = require('./img');
+var p = require('./p');
 
 var getAll = function(action, html, selector, options) {
 	// get all the tags corresponding to 'selector' in 'html' and apply 'action' with 'options'
@@ -13,6 +14,16 @@ var getAll = function(action, html, selector, options) {
 		result = result.concat(action(element, options));
 	});
 	return result;	
+}
+
+var joinAll = function(action, html, selector, options, key) {
+	var all = getAll(action, html, selector, options);
+	var ret = '';
+	for (var i in all) {
+		ret += all[i][key];
+		ret += '\n';
+	}
+	return [{content: ret.trim()}];
 }
 
 var Actions = {
@@ -177,32 +188,40 @@ var Actions = {
 	  label : 'Get the text (each content is stored separately - HTML is stripped)'
 	  , tags: ['p','']
 		, do: function(html, selector, url) {
-			var options = {};
-			return getAll(function(){return []}, html, selector, options)
+			var options = {
+				stripHtml: true
+			};
+			return getAll(p.getP, html, selector, options)
 		}
 	}
 	, "get concatenated text content" : {
 	  label : 'Get the text (contents are concatenated - HTML is stripped)'
 	  , tags: ['p','']
 		, do: function(html, selector, url) {
-			var options = {};
-			return getAll(function(){return []}, html, selector, options)
+			var options = {
+				stripHtml: true
+			};
+			return joinAll(p.getP, html, selector, options, 'content')
 		}
 	}
 	, "get html content" : {
 	  label : 'Get the HTML (each content is stored separately)'
 	  , tags: ['p','']
 		, do: function(html, selector, url) {
-			var options = {};
-			return getAll(function(){return []}, html, selector, options)
+			var options = {
+				stripHtml: false
+			};
+			return getAll(p.getP, html, selector, options)
 		}
 	}
 	, "get concatenated html content" : {
 	  label : 'Get the HTML (contents are concatenated)'
 	  , tags: ['p','']
 		, do: function(html, selector, url) {
-			var options = {};
-			return getAll(function(){return []}, html, selector, options)
+			var options = {
+				stripHtml: false
+			};
+			return joinAll(p.getP, html, selector, options, 'content')
 		}
 	}
 };

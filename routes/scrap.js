@@ -73,6 +73,7 @@ var scrap = function(socket, json, res) {
     		var fileId = uuid.v4();
     		var fileName = fileId + '.json';
     		var file = path.join(tmpDir,fileName);
+        console.log('Writing project to '+file);
     		fs.writeFile(file, JSON.stringify(project, null, '\t'), function(){
     			if (socket !== null) socket.emit('done', fileId);
     			if (res) res.redirect('/tmp/' + fileId);

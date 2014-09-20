@@ -35,7 +35,7 @@ var otherActions = function(currentAction, action) {
 			currentAction.should.have.property('do').with.type('function');
 		});
 		it('"do" callback should return an array', function(){
-			currentAction.do('', 'div').should.be.type('object').with.lengthOf(0);
+			currentAction.do('', 'div').should.be.an.instanceOf(Array);
 		});
 	});
 }
