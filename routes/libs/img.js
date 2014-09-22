@@ -23,34 +23,38 @@ var getImg = function(img, options) {
 
 	var src = $('img').attr('src');
 
-	var url = urls.parse(src, true);
-	if (!url.hostname) {
-		var src = urls.resolve(options.parentUrl, src);
-	}
-
-	if (options.toDataUrl) {
-		var result;
-		
-		var parsedUrl = urls.parse(url);
-
-		var syncRequest = httpSync.request({
-		    method: 'GET',
-		    headers: {},
-		    body: '',
-
-		    protocol: parsedUrl.protocol.replace(':',''),
-		    host: parsedUrl.hostname,
-		    port: parsedUrl.port,
-		    path: parsedUrl.path
-		});
-		var response = syncRequest.end();
-		if (response.statusCode == 200) {
-			var contentType = response.headers['content-type'] || response.headers['Content-Type'];
-			result = [{src: 'data:' + contentType + ';base64,' + response.body.toString('base64')}];
+	if (!src.match(/^data:/)) {
+		var _url = urls.parse(src, true);
+		if (!_url.hostname) {
+			var url = urls.resolve(options.parentUrl, src);
 		} else {
-			result = [{src: response.statusCode + ' Error.'}];
+			var url = src;
 		}
-		return result;
+
+		if (options.toDataUrl) {
+			
+			var parsedUrl = urls.parse(url);
+
+			var syncRequest = httpSync.request({
+			    method: 'GET',
+			    headers: {},
+			    body: '',
+
+			    protocol: parsedUrl.protocol.replace(':',''),
+			    host: parsedUrl.hostname,
+			    port: parsedUrl.port,
+			    path: parsedUrl.path
+			});
+			var response = syncRequest.end();
+			if (response.statusCode == 200) {
+				var contentType = response.headers['content-type'] || response.headers['Content-Type'];
+				return [{src: 'data:' + contentType + ';base64,' + response.body.toString('base64')}];
+			} else {
+				return [{src: response.statusCode + ' Error.'}];
+			}
+		} else {
+			return [{src: url}];
+		}
 	} else {
 		return [{src:src}];
 	}

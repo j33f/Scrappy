@@ -1,5 +1,5 @@
 var cheerio = require('cheerio');
-
+var jQ = require('jq2cheerio');
 // actions per element type
 var tables = require('./tables');
 var a = require('./a');
@@ -8,9 +8,13 @@ var p = require('./p');
 
 var getAll = function(action, html, selector, options) {
 	// get all the tags corresponding to 'selector' in 'html' and apply 'action' with 'options'
+
 	var $ = cheerio.load(html);
+
+	var $elements = jQ.exec($, selector);
+
 	var result = [];
-	$(selector).each(function(index, element){
+	$elements.each(function(index, element){
 		result = result.concat(action(element, options));
 	});
 	return result;	
