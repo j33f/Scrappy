@@ -193,7 +193,8 @@ var Actions = {
 	  , tags: ['p','']
 		, do: function(html, selector, url) {
 			var options = {
-				stripHtml: true
+				stripHtml: true,
+				selector: selector
 			};
 			return getAll(p.getP, html, selector, options)
 		}
@@ -203,7 +204,8 @@ var Actions = {
 	  , tags: ['p','']
 		, do: function(html, selector, url) {
 			var options = {
-				stripHtml: true
+				stripHtml: true,
+				selector: selector
 			};
 			return joinAll(p.getP, html, selector, options, 'content')
 		}
@@ -213,7 +215,8 @@ var Actions = {
 	  , tags: ['p','']
 		, do: function(html, selector, url) {
 			var options = {
-				stripHtml: false
+				stripHtml: false,
+				selector: selector
 			};
 			return getAll(p.getP, html, selector, options)
 		}
@@ -223,7 +226,8 @@ var Actions = {
 	  , tags: ['p','']
 		, do: function(html, selector, url) {
 			var options = {
-				stripHtml: false
+				stripHtml: false,
+				selector: selector
 			};
 			return joinAll(p.getP, html, selector, options, 'content')
 		}

@@ -27,6 +27,7 @@
     "comma-separated-values": "~3.3.0",
     "cookie-parser": "~1.0.1",
     "debug": "~0.7.4",
+    "deep-equal": "~0.2.1",
     "express": "~4.2.0",
     "hjs": "~0.0.6",
     "html-entities": "~1.0.10",

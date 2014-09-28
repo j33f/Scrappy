@@ -1,6 +1,7 @@
 var $page;
 var defaultOptions = { // default Scrappy options
 	skipOrigin: true
+	, skipLast: true
 	, limitPagination: false
 	, limitPaginationTo: 0
 	, avoidDuplicates: false
@@ -430,16 +431,19 @@ $(function(){
 			, keyboard: false
 		});
 	});
+	var $scrapProgressBar = $('#scrap-modal .progress-bar');
 	var $scrapProgressLabel = $('#scrap-modal .progressLabel');
+	var $scrapProgressTitle = $('#scrap-modal .modal-title');
+	var $scrapProgressMessage = $('#scrap-modal .message');
 	sio
 		.on('start', function(){
 			console.log('> Start');
-			$scrapProgressLabel.html('Starting...');
+			$scrapProgressMessage.html('Starting...');
 		})
 		.on('progress', function(message){
 			var json = JSON.parse(message);
-			$scrapProgressLabel.html('Scraping page '+ json.current + '/' + json.total);
-			$('#scrap-modal .progress-bar')
+			$scrapProgressMessage.html('Scraping page '+ json.current + '/' + json.total);
+			$scrapProgressBar
 				.attr('aria-valuenow', json.current)
 				.attr('aria-valuemax', json.total)
 				.css('width', (json.current / json.total * 100)+'%')
@@ -447,11 +451,23 @@ $(function(){
 			console.log(json);
 		})
 		.on('scrap done', function() {
-			$scrapProgressLabel.html('Scrapping done... Saving...');
+			$scrapProgressMessage.html('Scrapping done... Saving...');
 			$('#scrap-modal .progress-bar').addClass('progress-bar-info');			
 		})
+		.on('unduplicate', function(message){
+			var json = JSON.parse(message);
+			console.log(json);
+			$scrapProgressTitle.html('Removing duplicates');
+			$scrapProgressMessage.html(json.current + '/' + json.total + ' entries checked and ' + json.duplicates + ' duplicates found.');
+			$scrapProgressBar
+				.attr('aria-valuenow', json.current)
+				.attr('aria-valuemax', json.total)
+				.css('width', (json.current / json.total * 100)+'%')
+			;
+			console.log((json.current / json.total * 100));
+		})
 		.on('done', function(file){
-			$scrapProgressLabel.html('All done ! Redirecting to the next step...');
+			$scrapProgressMessage.html('All done ! Redirecting to the next step...');
 			document.location = host + '/format/' + file;
 			$('#scrap-modal .progress-bar').removeClass('active progress-bar-info').addClass('progress-bar-success');			
 		})

@@ -144,6 +144,33 @@
 
             <div class="row">
               <div class="col-md-10">
+                <big>Skip last pagination link</big> <a data-toggle="collapse" href="#skiplastinfos"><strong class="glyphicon glyphicon-question-sign"></strong></a>
+              </div>
+              <div class="col-md-2">
+                <div id="skipLast" class="btn-group btn-toggle radio pull-right" data-toggle="buttons" data-option="skipLast">
+                  <label class="btn on default active">
+                    <input type="radio" name="skipLast" value="1" checked="checked"> On
+                  </label>
+                  <label class="btn off">
+                    <input type="radio" name="skipLast" value="0"> OFF
+                  </label>
+                </div>              
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 collapse" id="skiplastinfos">
+                <div class="well">
+                  <p>Usually, when there is some pagination links, the last link send you to the last page, but this link is discovered before other pages, and that could mess up the original data order.</p>
+                  <p> Activating this option will tell Scrappy to skip the last pagination link found in order to preserve the original data order.</p>
+                  <p>On by default</p>
+                </div>
+              </div>
+            </div>
+
+          <hr>
+
+            <div class="row">
+              <div class="col-md-10">
                 <big>Limit pagination</big> <a data-toggle="collapse" href="#limitPaginationinfos"><strong class="glyphicon glyphicon-question-sign"></strong></a>
                 <div class="collapse form-group form" id="limitPaginationform">
                   <label for="limitPaginationTo">Limit pagination to this number of pages:</label>
@@ -270,6 +297,7 @@
             <h4 class="modal-title">Scraping in progress</h4>
           </div>
           <div class="modal-body">
+            <div class="message"></div>
             <div class="progress">
               <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
                 <span class="progressLabel"></span>
