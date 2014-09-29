@@ -168,40 +168,25 @@ $(function(){
 
 	// options UI
 	$('.btn-toggle.radio').click(function() {
-		$(this).find('.btn').toggleClass('active');
+    $(this).find('.btn').toggleClass('active');      
+	});
+	$('.btn-toggle.radio.toggleform').click(function() {
+    $('#' + $(this).data('target')).collapse('toggle');      
 	});
 	$('.btn.reset').click(function(){
-		options = JSON.parse(JSON.stringify(defaultOptions));
-		setOptionsUI(options);
-		$('#doscrap').data('projectjson', JSON.stringify({
-			url: url
-			, charset: charset
-			, actions: actions
-			, history: history
-			, options: options
-		}));
+		var $form = $(this).parents('form');
+		$('.active', $form).removeClass('active');
+		$('.default', $form).addClass('active');
+		$('input', $form).val($(this).data('defaultvalue'));
+		$('.collapse.form').collapse('hide');
 	});
 
-	var setOptionsUI = function(opts) {
-		for (var i in opts) {
+	var setOptionsUI = function() {
+		for (var i in options) {
 			if (i == 'limitPaginationTo') {
-				$('#limitPaginationTo').val(opts.limitPaginationTo);
-			} else if (opts[i]) {
-				$('#' + i + ' .on input').attr('checked',true);
-				$('#' + i + ' .off input').attr('checked',false);
-				$('#' + i + ' .on').addClass('active');
-				$('#' + i + ' .off').removeClass('active');
-				if ($('#' + i).hasClass('toggleform')) {
-					$('#' + $('#' + i).data('target')).collapse('show');      
-				}					
-			} else {
-				$('#' + i + ' .on input').attr('checked',false);
-				$('#' + i + ' .off input').attr('checked',true);					
-				$('#' + i + ' .on').removeClass('active');
-				$('#' + i + ' .off').addClass('active');
-				if ($('#' + i).hasClass('toggleform')) {
-					$('#' + $('#' + i).data('target')).collapse('hide');      
-				}					
+				$('#limitPaginationTo').val(options.limitPaginationTo);
+			} else if(options[i] != defaultOptions[i]) {
+				$('#' + i).click();
 			}
 		}
 	}
@@ -379,37 +364,26 @@ $(function(){
 	});	
 
 	// getting options
-	$('.btn-toggle.radio input[type="radio"]').change(function() {
-		var $parent = $(this).parents('.btn-toggle.radio');
-		var opt = $parent.data('option');
-		options[opt] = $parent.find('.on input').prop('checked');
-		if ($parent.hasClass('toggleform')) {
-			if (options[opt]) {
-				$('#' + $parent.data('target')).collapse('show');      
-			} else {
-				$('#' + $parent.data('target')).collapse('hide');      
-			}
-		}
-
+	$('.btn-toggle.radio').click(function() {
+		var optionName = $(this).data('option');
+		options[optionName] = !options[optionName];
 		$('#doscrap').data('projectjson', JSON.stringify({
-			url: url
-			, charset: charset
-			, actions: actions
-			, history: history
-			, options: options
-		}));
-		console.log(options);
+				url: url
+				, charset: charset
+				, actions: actions
+				, history: history
+				, options: options
+			}));		
 	});
 	$('#projectOptions input').on('keyup, change, click', function(){
 		options[$(this).data('option')] = $(this).val();
 		$('#doscrap').data('projectjson', JSON.stringify({
-			url: url
-			, charset: charset
-			, actions: actions
-			, history: history
-			, options: options
-		}));	
-		console.log(options);
+				url: url
+				, charset: charset
+				, actions: actions
+				, history: history
+				, options: options
+			}));		
 	});
 
 	$('#saveproject').click(function(){
@@ -432,9 +406,9 @@ $(function(){
 		var project = ls[load];
 		actions = project.actions;
 		history = project.history;
-		options = defaultOptions
+		options = setOptions(defaultOptions, project.options);
 		drawActionsTable();
-		setOptionsUI(project.options);
+		setOptionsUI();
  		$('#doscrap').data('projectjson', JSON.stringify({
 				url: url
 				, charset: charset
@@ -482,13 +456,15 @@ $(function(){
 		})
 		.on('unduplicate', function(message){
 			var json = JSON.parse(message);
+			console.log(json);
 			$scrapProgressTitle.html('Removing duplicates');
-			$scrapProgressMessage.html('This stage can take several minutes with huge datasets');
-		})
-		.on('unduplicate done', function(message){
-			var json = JSON.parse(message);
-			$scrapProgressTitle.html('Removing duplicates');
-			$scrapProgressMessage.html('Done ! ' + json.total + 'entries checked, ' + json.duplicates + 'were found and deleted.');
+			$scrapProgressMessage.html(json.current + '/' + json.total + ' entries checked and ' + json.duplicates + ' duplicates found.');
+			$scrapProgressBar
+				.attr('aria-valuenow', json.current)
+				.attr('aria-valuemax', json.total)
+				.css('width', (json.current / json.total * 100)+'%')
+			;
+			console.log((json.current / json.total * 100));
 		})
 		.on('done', function(file){
 			$scrapProgressMessage.html('All done ! Redirecting to the next step...');
