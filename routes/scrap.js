@@ -96,7 +96,7 @@ var scrap = function(socket, json, res) {
     		// we do have some more urls to scrap
     		doScrap();
     	} else {
-        // need to cleanup ?
+        // need to delete duplicates ?
         if (project.options.avoidDuplicates || true) {
           var total = 0;
           for (var i in project.data) {
@@ -122,6 +122,7 @@ var scrap = function(socket, json, res) {
               }
             }
           }
+          if (socket !== null) socket.emit('unduplicate done', JSON.stringify({total: total, duplicates: duplicates}));
           project.data = data;
         }
 
