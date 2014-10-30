@@ -43,7 +43,8 @@
       <h2>Extracted data</h2>
       <p>Here are each dataset, please have a look at them before to download them. You can go back if needed to change your selectors. You can also assemble and clean datasets.</p>
       <p id="buttons">
-        <a href="javascript:history.back();" class="btn btn-info btn-sm"><strong class="glyphicon glyphicon-arrow-left"></strong> Examine again</a>
+        <div class="hidden"><form action="{{{ host }}}/examine" method="POST" id="examine_again"><input type="hidden" name="url" id="url" value=""><input type="hidden" name="load" value="__current"></form></div>
+        <a href="#" id="btn_examine_again" class="btn btn-info btn-sm"><strong class="glyphicon glyphicon-arrow-left"></strong> Examine again</a>
         <a href="{{{ host }}}/data/{{{ file }}}/csv" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-download"></strong> Download as CSV</a>
         <a href="{{{ host }}}/data/{{{ file }}}/json" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-download"></strong> Download as JSON</a>
       </p>

@@ -1,7 +1,8 @@
-var project;
 var tabCount = 1;
 $(function(){
 	$.getJSON(host + '/tmp/' + file + '.json', function( project ) {
+		$('#url').val(project.url);
+		console.log(project);
 		for (var name in project.data) {
 			// create a tab
 			if (tabCount == 1) {
@@ -41,5 +42,9 @@ $(function(){
 		}
 
 		$('#loading').hide(200);
+	});
+	$('#btn_examine_again').click(function(e){
+		e.preventDefault();
+		$('#examine_again').submit();
 	});
 });

@@ -15,13 +15,15 @@ $(function(){
 		if (Object.keys(ls).length) {
 			var html = ''
 			for (var name in ls) {
-				html += '<tr data-name="name"><td><strong>' + name + '</strong> - ' + ls[name].url + '</td>';
-				html += '<td><form action="examine" method="post">';
-				html += '<input type="hidden" name="url" value="' + ls[name].url + '">';
-				html += '<input type="hidden" name="load" value="' + name + '">';
-				html += '<button class="btn btn-primary  pull-right">Load this project</button> ';
-				html += '</form></td>';
-				html += '<td><button type="button" class="btn btn-danger pull-right delproject" data-name="' + name + '"><strong class="glyphicon glyphicon-trash"></strong></button></td></tr>';
+				if (name != '__current') {
+					html += '<tr data-name="name"><td><strong>' + name + '</strong> - ' + ls[name].url + '</td>';
+					html += '<td><form action="examine" method="post">';
+					html += '<input type="hidden" name="url" value="' + ls[name].url + '">';
+					html += '<input type="hidden" name="load" value="' + name + '">';
+					html += '<button class="btn btn-primary  pull-right">Load this project</button> ';
+					html += '</form></td>';
+					html += '<td><button type="button" class="btn btn-danger pull-right delproject" data-name="' + name + '"><strong class="glyphicon glyphicon-trash"></strong></button></td></tr>';
+				}
 			}
 			$('#projects').html(html);
 			$('#storedprojects').show();

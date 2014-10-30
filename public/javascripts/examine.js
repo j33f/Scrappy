@@ -135,12 +135,12 @@ $(function(){
 	  }
 	};
 
-	var saveProject = function(name, action) {
+	var saveProject = function(name, action, force) {
 		if (action == 'create') {
 			if (!localStorage.scrappyActions) localStorage['scrappyActions'] =  JSON.stringify({});
 		}
 		var ls = JSON.parse(localStorage.scrappyActions);
-		if (action == 'create') {
+		if (action == 'create' && !force) {
 			if (ls[name]) {
 				bootbox.prompt('A project with this name already exists, please choose another name', function(name){
 					saveProject(name, 'create');
@@ -156,14 +156,15 @@ $(function(){
 			, history: history
 		};
 		localStorage['scrappyActions'] = JSON.stringify(ls);
-		$('#project').show().find('strong').html(name);
-		$('.savechanges').show();
-		if (action == 'create') {
-			bootbox.alert('Created !');
-		} else {
-			bootbox.alert('Changes saved !');
+		if (!force) {
+			$('#project').show().find('strong').html(name);
+			$('.savechanges').show();
+			if (action == 'create') {
+				bootbox.alert('Created !');
+			} else {
+				bootbox.alert('Changes saved !');
+			}
 		}
-
 	}
 
 	// options UI
@@ -240,6 +241,7 @@ $(function(){
 		});
 		$('#loading').hide();
 		$('#page').height($(window).height() - pageOffset.top - $('#main-form').height() - $('#tabnav').height());
+
 	}, 1000);
 
 	$('#current-selector').keyup(function() {
@@ -355,6 +357,7 @@ $(function(){
 				, history: history
 				, options: options
 			}));
+			saveProject('__current','create',true);
 			$('#actions-list').find('.popover-dismiss').popover();
 
 			$('#add-action-modal').modal('hide');
@@ -401,7 +404,7 @@ $(function(){
 			, history: history
 			, options: options
 		}));
-		console.log(options);
+		saveProject('__current','create',true);
 	});
 	$('#projectOptions input').on('keyup, change, click', function(){
 		options[$(this).data('option')] = $(this).val();
@@ -413,7 +416,7 @@ $(function(){
 			, history: history
 			, options: options
 		}));	
-		console.log(options);
+		saveProject('__current','create',true);
 	});
 
 	$('#saveproject').click(function(){
@@ -448,6 +451,7 @@ $(function(){
 				, history: history
 				, options: options
 			}));
+ 		saveProject('__current','create',true);
 		$('#selectorslisttab, #nextstepstab, #optionstab').show().effect('highlight', {}, 2000);
 		$('#project').show().find('strong').html(load);
  		$('.savechanges').show();
