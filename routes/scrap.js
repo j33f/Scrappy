@@ -42,7 +42,7 @@ var scrap = function(socket, json, res) {
   var doScrap = function() {
   	// scrap the pages to scrap
   	if (socket !== null) socket.emit('progress', JSON.stringify({current:(project.pagination.scrapped +1), total: project.pagination.urls.length}));
-  	console.log('> url ' + (project.pagination.scrapped +1) + '/' + project.pagination.urls.length);
+  	console.log('> url ' + (project.pagination.scrapped +1) + '/' + project.pagination.urls.length + ' - ' + project.pagination.urls[project.pagination.scrapped]);
 
   	var url = project.pagination.urls[project.pagination.scrapped]; // use the current url in list
 
@@ -66,7 +66,11 @@ var scrap = function(socket, json, res) {
     	var $ = cheerio.load(html);
     	for (var i in project.pagination.selectors) {
     		$(project.pagination.selectors[i]).each(function(index) {
-          if (project.options.skipLast && index < $(project.pagination.selectors[i]).length-1) {
+          if ( 
+            ( project.options.skipLast && index < $(project.pagination.selectors[i]).length-1 )
+            ||
+            !project.options.skipLast
+          ) {
       			// get the href of all pagination links
       			var href = $(this).attr('href');
       			if (href) {
@@ -84,7 +88,7 @@ var scrap = function(socket, json, res) {
     	  				}
     	  			}
     	  		}
-          } 
+          }
     		});
     	}
 
