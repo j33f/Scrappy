@@ -36,6 +36,7 @@ $(function(){
 			}
 			$('#tab_' + tabCount).html($table);
 			$('#table_id' + tabCount).DataTable();
+			$('body').find('.dataTables_wrapper input', '.dataTables_wrapper select').addClass('form-control input-sm').css({'display':'inline-block','width':'auto'});
 			tabCount++;
 		}
 

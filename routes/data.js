@@ -29,7 +29,7 @@ router.get('/:file', function(req, res) {
 	  	, file: req.params.file // the collected data file
 	};
 
-	res.render('format', params);
+	res.render('data', params);
 });
 
 router.get('/:file/json', function(req, res){

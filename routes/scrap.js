@@ -36,10 +36,8 @@ var scrap = function(socket, json, res) {
     limitPaginationTo: 0,
     avoidDuplicates: false
   };
-  console.dir(project.options);
   project.options.limitPaginationTo = parseInt(project.options.limitPaginationTo);
   project.options = optionsUtils.set(defaultOptions, project.options);
-  console.dir(project.options);
 
   var doScrap = function() {
   	// scrap the pages to scrap
@@ -114,11 +112,6 @@ var scrap = function(socket, json, res) {
                 data[i].push(project.data[i][j]);
               } else {
                 duplicates++;
-              }
-              console.log ('Unduplicate\t '+current+'/'+total+' ('+duplicates+' found ; last emit: '+lastSocketEmit+')');
-              if (socket !== null && (current - Math.floor(total/5)) >= lastSocketEmit) {
-                socket.emit('unduplicate', JSON.stringify({current: current, total: total, duplicates: duplicates}));
-                lastSocketEmit = current;
               }
             }
           }

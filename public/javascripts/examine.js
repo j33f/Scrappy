@@ -353,6 +353,7 @@ $(function(){
 				, charset: charset
 				, actions: actions
 				, history: history
+				, options: options
 			}));
 			$('#actions-list').find('.popover-dismiss').popover();
 
@@ -492,7 +493,7 @@ $(function(){
 		})
 		.on('done', function(file){
 			$scrapProgressMessage.html('All done ! Redirecting to the next step...');
-			document.location = host + '/format/' + file;
+			document.location = host + '/data/' + file;
 			$('#scrap-modal .progress-bar').removeClass('active progress-bar-info').addClass('progress-bar-success');			
 		})
 	;

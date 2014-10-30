@@ -40,12 +40,12 @@
 
 
   	<div class="container">
-      <h2>Formatting</h2>
-      <p>Here are each dataset, please have a look at them before to download them. You can go back if needed to change your selectors.</p>
-      <p>
+      <h2>Extracted data</h2>
+      <p>Here are each dataset, please have a look at them before to download them. You can go back if needed to change your selectors. You can also assemble and clean datasets.</p>
+      <p id="buttons">
         <a href="javascript:history.back();" class="btn btn-info btn-sm"><strong class="glyphicon glyphicon-arrow-left"></strong> Examine again</a>
-        <a href="{{{ host }}}/format/{{{ file }}}/csv" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-download"></strong> Download as CSV</a>
-        <a href="{{{ host }}}/format/{{{ file }}}/json" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-download"></strong> Download as JSON</a>
+        <a href="{{{ host }}}/data/{{{ file }}}/csv" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-download"></strong> Download as CSV</a>
+        <a href="{{{ host }}}/data/{{{ file }}}/json" class="btn btn-primary btn-sm"><strong class="glyphicon glyphicon-download"></strong> Download as JSON</a>
       </p>
       <div class="progress" id="loading">
         <div class="progress-bar progress-bar-striped active" style="width: 100%">
@@ -67,6 +67,6 @@
     <script src="{{{ host }}}/javascripts/jquery-ui.min.js"></script>
     <script src="{{{ host }}}/javascripts/bootbox.min.js"></script>
     <script src="{{{ host }}}/javascripts/jquery.dataTables.min.js"></script>
-    <script src="{{{ host }}}/javascripts/format.js"></script>
+    <script src="{{{ host }}}/javascripts/data.js"></script>
   </body>
 </html>    
