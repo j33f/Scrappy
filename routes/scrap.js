@@ -95,7 +95,7 @@ var scrap = function(socket, json, res) {
     		doScrap();
     	} else {
         // need to delete duplicates ?
-        if (project.options.avoidDuplicates || true) {
+        if (project.options.avoidDuplicates) {
           var total = 0;
           for (var i in project.data) {
             total += project.data[i].length;
