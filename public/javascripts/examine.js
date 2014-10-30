@@ -392,6 +392,8 @@ $(function(){
 			}
 		}
 
+		options.limitPaginationTo = parseInt(options.limitPaginationTo);
+
 		$('#doscrap').data('projectjson', JSON.stringify({
 			url: url
 			, charset: charset
@@ -403,6 +405,7 @@ $(function(){
 	});
 	$('#projectOptions input').on('keyup, change, click', function(){
 		options[$(this).data('option')] = $(this).val();
+		options.limitPaginationTo = parseInt(options.limitPaginationTo);
 		$('#doscrap').data('projectjson', JSON.stringify({
 			url: url
 			, charset: charset
@@ -433,9 +436,11 @@ $(function(){
 		var project = ls[load];
 		actions = project.actions;
 		history = project.history;
-		options = defaultOptions
+		options = setOptions(defaultOptions,project.options);
 		drawActionsTable();
+		options.limitPaginationTo = parseInt(options.limitPaginationTo);
 		setOptionsUI(project.options);
+		options.limitPaginationTo = parseInt(options.limitPaginationTo);
  		$('#doscrap').data('projectjson', JSON.stringify({
 				url: url
 				, charset: charset
