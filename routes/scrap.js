@@ -61,36 +61,48 @@ var scrap = function(socket, json, res) {
       			project.data[name] = project.data[name].concat(actionResult); // add the collected data to the datastore
       		}
       	}
+      } else {
+        console.log('Origin skipped');
       }
     	// collects all pagination links hrefs
-    	var $ = cheerio.load(html);
-    	for (var i in project.pagination.selectors) {
-    		$(project.pagination.selectors[i]).each(function(index) {
-          if ( 
-            ( project.options.skipLast && index < $(project.pagination.selectors[i]).length-1 )
-            ||
-            !project.options.skipLast
-          ) {
-      			// get the href of all pagination links
-      			var href = $(this).attr('href');
-      			if (href) {
-      				// some time the anchors are just anchors !
-    	  			if (href.trim() != '') {
-    	  				// sometime hrefs are invalids or relatives : reconstruct an absolute url
-    	  				// TODO : take advantage of the base url meta !
-    	  				var url = urls.parse(href, true);
-    	  				if (!url.hostname) {
-    	  					href = urls.resolve(project.url, href);
-    	  				}
-    	  				if (project.pagination.urls.indexOf(href) == -1) {
-    	  					// we can add this url if we did not already have it
-    	  					project.pagination.urls.push(href);
-    	  				}
-    	  			}
-    	  		}
-          }
-    		});
-    	}
+      if (project.options.limitPagination && project.options.limitPaginationTo > 0 && project.pagination.urls.length < project.options.limitPaginationTo) {
+        // we did not have reached the limit yet
+      	var $ = cheerio.load(html);
+      	for (var i in project.pagination.selectors) {
+      		$(project.pagination.selectors[i]).each(function(index) {
+            if ( 
+              ( project.options.skipLast && index < $(project.pagination.selectors[i]).length-1 )
+              ||
+              !project.options.skipLast
+            ) {
+        			// get the href of all pagination links
+        			var href = $(this).attr('href');
+        			if (href) {
+        				// some time the anchors are just anchors !
+      	  			if (href.trim() != '') {
+      	  				// sometime hrefs are invalids or relatives : reconstruct an absolute url
+      	  				// TODO : take advantage of the base url meta !
+      	  				var url = urls.parse(href, true);
+      	  				if (!url.hostname) {
+      	  					href = urls.resolve(project.url, href);
+      	  				}
+      	  				if (project.pagination.urls.indexOf(href) == -1) {
+      	  					// we can add this url if we did not already have it
+                    if (project.options.limitPagination && project.options.limitPaginationTo > 0 && project.pagination.urls.length < project.options.limitPaginationTo) {
+                      // we did not have reached the limit yet
+      	  					  project.pagination.urls.push(href);
+                    } else {
+                      console.log('pagination limit reached');
+                    }
+      	  				}
+      	  			}
+      	  		}
+            }
+      		});
+      	}
+      } else {
+        console.log('pagination limit reached');
+      }
 
     	project.pagination.scrapped++; // increment the scrapped urls counter
     	
