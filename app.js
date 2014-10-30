@@ -11,7 +11,6 @@ var routes = require('./routes/index');
 var examine = require('./routes/examine');
 var scrap = require('./routes/scrap');
 var data = require('./routes/data');
-var format = require('./routes/format');
 
 var app = express();
 
@@ -31,7 +30,6 @@ app.use('/', routes);
 app.use('/examine', examine);
 app.use('/scrap', scrap.router);
 app.use('/data', data);
-app.use('/format', format);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
