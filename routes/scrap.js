@@ -48,11 +48,11 @@ var scrap = function(socket, json, res) {
 
     request({url: url, encoding: null}, function(err, code, html) {
     	html = iconv.decode(html, project.charset); // apply the proper charset to the html content : is it really useful ?
-      /*if (
+      if (
         ( project.options.skipOrigin && project.pagination.selectors.length > 0 && project.pagination.urls.length > 1 )
         || 
         !project.options.skipOrigin
-      ) {*/
+      ) {
       	for (var name in project.actions) {
       		// perform all actions and store them into the datastore
       		if (actions[project.actions[name].action]) { // ensure that the action really exists
@@ -61,7 +61,7 @@ var scrap = function(socket, json, res) {
       			project.data[name] = project.data[name].concat(actionResult); // add the collected data to the datastore
       		}
       	}
-      /*}*/
+      }
     	// collects all pagination links hrefs
     	var $ = cheerio.load(html);
     	for (var i in project.pagination.selectors) {
