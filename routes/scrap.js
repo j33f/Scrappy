@@ -9,6 +9,7 @@ var fs = require('fs');
 var uuid = require('node-uuid');
 var optionsUtils = require('./libs/options');
 var deepEqual = require('deep-equal');
+var util = require('util');
 var isDuplicate = function(needle,haystack,opts) {
   for (var i in haystack) {
     if (deepEqual(needle, haystack[i])) {
@@ -26,7 +27,7 @@ var tmpDir = path.join(__dirname, '../public/tmp');
 
 var scrap = function(socket, json, res) {
   var project = JSON.parse(json); // load the scrapping project
-  project.data = {}; // the data scrapped from url
+  project.data = {}; // the data scrapped from url assembled
   project.pagination = {urls:[project.url], selectors:[], scrapped: 0}; // the pagination links if any
   																													 // {urls: [array of urls to scrap, the first one is the project url], selectors: [array of links selectors], scrapped: number of pagination urls scrapped}
 	var defaultOptions =  { 
@@ -53,14 +54,38 @@ var scrap = function(socket, json, res) {
         || 
         !project.options.skipOrigin
       ) {
+        project._data = {};
       	for (var name in project.actions) {
       		// perform all actions and store them into the datastore
       		if (actions[project.actions[name].action]) { // ensure that the action really exists
-      			if (project.data[name] == undefined) { project.data[name] = []; } // create the datastore if needed
+      			if (project._data[name] == undefined) { project._data[name] = []; } // create the datastore if needed
       			var actionResult = actions[project.actions[name].action].do(html, project.actions[name].selector, url); // perform the action and collect data
-      			project.data[name] = project.data[name].concat(actionResult); // add the collected data to the datastore
+      			project._data[name] = project._data[name].concat(actionResult); // add the collected data to the datastore
       		}
       	}
+        // scrap has been done, lets assemble the data
+
+        // 1) find an "array" if any
+        var entry = null;
+        var data = [];
+        for (var i in project._data) {
+          if (project._data[i].length > 1) {
+            data = project._data[i];
+            entry = i;
+          }
+        }
+        // 2) add all the other scrapped data as a new entry in the array
+        for (var i in project._data) {
+          if (i !== entry) {
+            for (var j in data) {
+              data[j][i] = project._data[i][0].content;
+            }
+          }
+        }
+        // 3) add this to the store
+        if (project.data[entry] == undefined) { project.data[entry] = []; } // create the datastore if needed
+        project.data[entry] = project.data[entry].concat(data);
+        
       } else {
         console.log('Origin skipped');
       }
