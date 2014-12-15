@@ -10,12 +10,12 @@ A simple utility to help scrap things and save them
 ## Functionnalities
 
 - easy click and select elements on page
-- use jQuery selectors
+- use jQuery selectors (those handled by [Jq2cheerio](https://github.com/j33f/jQ2Cheerio))
 - smart actions for elements (detects a, img, p, table) and offers custom actions for these
 - smart pagination links handling
-- detects attributes and offers to scrap them
 - CRUD scrapping projects (use localStorage at the moment)
 - export data to JSON, CSV or ZIP of CSV files
+- assemble datas automatically if possible
 
 ## Try it now
 
@@ -27,5 +27,5 @@ or try the demo (may not be up to date) http://scrappy-example.herokuapp.com
 
 - handle the colspan for tables
 - maybe handle the rowspan
-
+- implement scrap for attributes
 
