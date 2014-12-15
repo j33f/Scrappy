@@ -68,24 +68,36 @@ var scrap = function(socket, json, res) {
         // 1) find an "array" if any
         var entry = null;
         var data = [];
+        var count = 0;
         for (var i in project._data) {
           if (project._data[i].length > 1) {
             data = project._data[i];
             entry = i;
+            count++;
           }
         }
-        // 2) add all the other scrapped data as a new entry in the array
-        for (var i in project._data) {
-          if (i !== entry) {
-            for (var j in data) {
-              data[j][i] = project._data[i][0].content;
+
+        // we assemble the data only if there is only one "array" in the datasets
+        if (count == 1) {
+
+          // 2) add all the other scrapped data as a new entry in the array
+          for (var i in project._data) {
+            if (i !== entry) {
+              for (var j in data) {
+                data[j][i] = project._data[i][0].content;
+              }
             }
           }
+          // 3) add this to the store
+          if (project.data[entry] == undefined) { project.data[entry] = []; } // create the datastore if needed
+          project.data[entry] = project.data[entry].concat(data);
+
+        } else {
+          for (var entry in project._data) {
+            if (project.data[entry] == undefined) { project.data[entry] = []; } // create the datastore if needed
+            project.data[entry] = project.data[entry].concat(project._data[entry]);
+          }
         }
-        // 3) add this to the store
-        if (project.data[entry] == undefined) { project.data[entry] = []; } // create the datastore if needed
-        project.data[entry] = project.data[entry].concat(data);
-        
       } else {
         console.log('Origin skipped');
       }
