@@ -274,10 +274,12 @@
                 <label for="action">Choose what to do with this selector</label>
                 <select id="action" class="form-control"></select>
               </div>
+              <div style="display:none">
               <div class="form-group" id="attributes-div">
                 <label for="action">Select attributes to grab values from</label>
                 <select id="attributes" class="form-control" multiple="multiple"></select>
                 <p class="help-block">You can select more than one attribute.</p>
+              </div>
               </div>
             </form>
           </div>

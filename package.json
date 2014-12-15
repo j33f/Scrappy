@@ -2,6 +2,7 @@
   "name": "scrappy",
   "version": "0.1.0",
   "private": true,
+  "engine": "node 0.10",
   "author": {
     "name": "Jean-François Vial",
     "url": "http://about.me/Jeff_"
