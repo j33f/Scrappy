@@ -8,6 +8,7 @@ var defaultOptions = { // default Scrappy options
 };
 var options = {}; // current options, will be initialized later in the script
 var actions = {};
+var name = '';
 
 var sio = io.connect(host); // initiate the socket
 
@@ -152,8 +153,9 @@ $(function(){
 			url: url
 			, charset: charset
 			, actions: actions
-			, options: options
 			, history: history
+			, options: options
+			, name: name
 		};
 		localStorage['scrappyActions'] = JSON.stringify(ls);
 		if (!force) {
@@ -180,6 +182,7 @@ $(function(){
 			, actions: actions
 			, history: history
 			, options: options
+			, name: name
 		}));
 	});
 
@@ -356,6 +359,7 @@ $(function(){
 				, actions: actions
 				, history: history
 				, options: options
+				, name: name
 			}));
 			saveProject('__current','create',true);
 			$('#actions-list').find('.popover-dismiss').popover();
@@ -403,6 +407,7 @@ $(function(){
 			, actions: actions
 			, history: history
 			, options: options
+			, name: name
 		}));
 		saveProject('__current','create',true);
 	});
@@ -415,6 +420,7 @@ $(function(){
 			, actions: actions
 			, history: history
 			, options: options
+			, name: name
 		}));	
 		saveProject('__current','create',true);
 	});
@@ -437,6 +443,11 @@ $(function(){
 	if (load != '') {
 		var ls = JSON.parse(localStorage.scrappyActions);
 		var project = ls[load];
+		console.log(project);
+		name    = project.name || '(not saved project)';
+		if (name == '__current') {
+			name = '(not saved project)';
+		}
 		actions = project.actions;
 		history = project.history;
 		options = setOptions(defaultOptions,project.options);
@@ -450,10 +461,11 @@ $(function(){
 				, actions: actions
 				, history: history
 				, options: options
+				, name: name
 			}));
  		saveProject('__current','create',true);
 		$('#selectorslisttab, #nextstepstab, #optionstab').show().effect('highlight', {}, 2000);
-		$('#project').show().find('strong').html(load);
+		$('#project').show().find('strong').html(name);
  		$('.savechanges').show();
 	} else {
 		// set default options

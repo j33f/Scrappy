@@ -64,8 +64,14 @@ var scrap = function(socket, json, res) {
       } else {
         console.log('Origin skipped');
       }
+
     	// collects all pagination links hrefs
-      if (project.options.limitPagination && project.options.limitPaginationTo > 0 && project.pagination.urls.length < project.options.limitPaginationTo) {
+
+      if (
+          ( project.options.limitPagination && project.options.limitPaginationTo > 0 && project.pagination.urls.length < project.options.limitPaginationTo )
+          ||
+          !project.options.limitPagination
+      ) {
         // we did not have reached the limit yet
       	var $ = cheerio.load(html);
       	for (var i in project.pagination.selectors) {
@@ -88,11 +94,15 @@ var scrap = function(socket, json, res) {
       	  				}
       	  				if (project.pagination.urls.indexOf(href) == -1) {
       	  					// we can add this url if we did not already have it
-                    if (project.options.limitPagination && project.options.limitPaginationTo > 0 && project.pagination.urls.length < project.options.limitPaginationTo) {
+                    if (
+                        ( project.options.limitPagination && project.options.limitPaginationTo > 0 && project.pagination.urls.length < project.options.limitPaginationTo )
+                        ||
+                        !project.options.limitPagination
+                    ) {
                       // we did not have reached the limit yet
       	  					  project.pagination.urls.push(href);
                     } else {
-                      console.log('pagination limit reached');
+                      console.log('Pagination limit reached');
                     }
       	  				}
       	  			}
@@ -101,7 +111,7 @@ var scrap = function(socket, json, res) {
       		});
       	}
       } else {
-        console.log('pagination limit reached');
+        console.log('Pagination limit reached');
       }
 
     	project.pagination.scrapped++; // increment the scrapped urls counter
